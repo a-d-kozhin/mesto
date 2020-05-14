@@ -1,0 +1,21 @@
+.popup__submit-button {
+	width: 100%;
+  height: 40px;
+	background: rgba(0, 0, 0, 1);
+	color: #fff;
+	border-radius: 2px;
+	margin: 48px 0 0 0;
+	padding: 0;
+}
+
+.popup__submit-button:hover {
+	opacity: 1;
+	background: rgba(0, 0, 0, .8);
+	transition: .6s;
+}
+
+@media (min-width: 582px) {
+	.popup__submit {
+		height: 50px;
+	}
+}

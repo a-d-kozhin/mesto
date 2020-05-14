@@ -1,0 +1,21 @@
+@import url(../logo/_place/logo_place_header.css);
+
+.logo {
+  width: 103px;
+  height: 25px;
+  padding-left: 30px;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (min-width: 582px) {
+  .logo {
+    width: 142px;
+    height: 33px;
+  }
+}
+
+@media (min-width: 930px) {
+  .logo {
+    padding-left: 0;
+  }
+}

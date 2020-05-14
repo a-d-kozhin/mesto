@@ -1,0 +1,12 @@
+@import url(../element/__image/element__image.css);
+@import url(../element/__title/element__title.css);
+@import url(../element/__wrapper/element__wrapper.css);
+
+.element {
+  border-radius: 10px;
+  background-color: white;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+}
