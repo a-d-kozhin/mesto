@@ -5,12 +5,24 @@
 	text-align: center;
 	grid-column: span 2;
 	margin: 0;
+	text-overflow: ellipsis;
+	max-width: 262px;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 @media (min-width: 650px) {
-		.profile__job {
+	.profile__job {
 		text-align: left;
-		font-size: 18px;
+		font-size: 16px;
 		line-height: 22px;
+		max-width: 250px;
+	}
+}
+
+@media (min-width: 882px) {
+	.profile__job {
+		font-size: 18px;
+		max-width: 450px;
 	}
 }

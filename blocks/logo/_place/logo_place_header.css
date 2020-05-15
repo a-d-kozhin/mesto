@@ -1,0 +1,9 @@
+.logo_place_header {
+	margin-bottom: 30px;
+}
+
+@media (min-width: 582px) {
+	.logo_place_header {
+		margin-bottom: 40px;
+	}
+}

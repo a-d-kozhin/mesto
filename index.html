@@ -9,16 +9,6 @@
 
 <body class="project">
   <div class="page">
-    <section class="popup">
-      <form class="popup__container">
-        <p class="popup__title">Редактировать профиль</p>
-        <input class="popup__input popup__input-name" type="text" placeholder="">
-        <input class="popup__input popup__input-job" type="text" placeholder="">
-        <button type="submit" class="button popup__submit-button">Сохранить</button>
-        <button type="button" class="button popup__close-button"></button>
-      </form>
-    </section>
-
     <header class="header">
       <a href="#" class="link">
         <img src="images/logo-2.svg" alt="Логотип проекта Mesto Russia" class="logo logo_place_header">
@@ -28,7 +18,7 @@
     <main class="content">
 
       <section class="profile">
-        <img src="images/Avatar.png" alt="" class="profile__avatar">
+        <img src="images/Avatar.png" alt="Аватар профиля" class="profile__avatar">
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button type="button" class="button profile__edit-button"></button>
@@ -37,12 +27,12 @@
         <button type="button" class="button profile__add-button"></button>
       </section>
 
-      <ul class="list elements">
+      <ul class="elements">
         <li class="element">
           <img src="images/altai.jpg" alt="Алтай" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Алтай</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
 
@@ -50,7 +40,7 @@
           <img src="images/baikal.jpg" alt="Байкал" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Байкал</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
 
@@ -58,7 +48,7 @@
           <img src="images/arkhyz.jpg" alt="Архыз" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Архыз</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
 
@@ -66,21 +56,21 @@
           <img src="images/dombai.jpg" alt="Домбай" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Домбай</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
         <li class="element">
           <img src="images/karelia.jpg" alt="Карелия" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Карелия</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
         <li class="element">
           <img src="images/elbrus.jpg" alt="Эльбрус" class="element__image">
           <div class="element__wrapper">
             <h2 class="element__title">Эльбрус</h2>
-            <button type="button" class="button like-button"></button>
+            <button type="button" class="button element__like-button"></button>
           </div>
         </li>
       </ul>
@@ -90,6 +80,17 @@
     <footer class="footer">
       <p class="footer__copyright">&copy; 2020. Саша Кожин</p>
     </footer>
+
+    <section class="popup open-smoothly">
+      <form class="popup__container" name="popup-profile" action="#" method="POST">
+        <p class="popup__title">Редактировать профиль</p>
+        <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="popup-name" required>
+        <input class="popup__input popup__input_type_job" type="text" placeholder="Профессия" name="popup-job" required>
+        <button type="submit" class="popup__submit-button">Сохранить</button>
+        <button type="button" class="button popup__close-button"></button>
+      </form>
+    </section>  
+
   </div>
   <script src="scripts/script.js"></script>
 </body>

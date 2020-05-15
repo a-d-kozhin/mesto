@@ -4,40 +4,23 @@ const form = document.querySelector('.popup__container');
 const popupCloseButton = document.querySelector('.popup__close-button');
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
-const nameInput = document.querySelector('.popup__input-name');
-const jobInput = document.querySelector('.popup__input-job');
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_job');
 
-nameInput.value = profileName.childNodes[0].textContent.trim();
-jobInput.value = profileJob.textContent;
-
-profileEditButton.addEventListener('click', openPopup);
-popupCloseButton.addEventListener('click', closePopup);
-form.addEventListener('submit', formSubmitHandler);
-
-function openPopup() {
-  popup.classList.add('popup_opened');
-  return
+function openClosePopup() {
+  popup.classList.toggle('popup_opened');
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileJob.textContent;
 }
-
-function closePopup() {
-  popup.classList.remove('popup_opened');
-  return
-}
+profileEditButton.addEventListener('click', openClosePopup);
+popupCloseButton.addEventListener('click', openClosePopup);
 
 function formSubmitHandler (evt) {
   evt.preventDefault();
   let nameInputValue = nameInput.value.trim();
 	let jobInputValue = jobInput.value.trim();
-	
-	if(nameInputValue === '' || jobInputValue === '') {
-		alert('Пожалуйста, заполните все поля формы');
-	}
-	
-	else {
-    profileName.childNodes[0].textContent = nameInputValue;
-		profileJob.textContent = jobInputValue;
-    closePopup();
-		}
-		return
+  profileName.textContent = nameInputValue;
+	profileJob.textContent = jobInputValue;
+  popup.classList.remove('popup_opened');
 }
-
+form.addEventListener('submit', formSubmitHandler);

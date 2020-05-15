@@ -1,7 +1,7 @@
 .profile__info {
   margin: 14px 0 0 0;
   display: grid;
-  grid-template-columns: fit-content(262px) 18px;
+  grid-template-columns: min-content 18px;
   align-items: center;
   column-gap: 4px;
   row-gap: 14px;
@@ -12,14 +12,14 @@
   .profile__info {
 		margin: 0 20px;
     column-gap: 10px;
-    grid-template-columns: fit-content(294px) 18px;
+    grid-template-columns: min-content 18px;
   }
 }
 
 @media (min-width: 882px) {
   .profile__info {
     margin: 0 30px;
-    grid-template-columns: fit-content(297px) 24px;
+    grid-template-columns: min-content 24px;
 		column-gap: 15px;
   }
 }

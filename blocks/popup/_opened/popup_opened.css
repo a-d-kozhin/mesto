@@ -1,15 +1,4 @@
-@keyframes open {
-    0% {
-      opacity: 0;
-      transform: translate(0, 15px);
-    }
-    100% {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
-  }
 
   .popup_opened {
     display: flex;
-    animation: open .6s;
   }
