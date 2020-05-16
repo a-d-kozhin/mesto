@@ -5,9 +5,10 @@
 
 .element {
   border-radius: 10px;
-  background-color: white;
+  background-color: #fff;
   font-weight: 900;
   font-size: 24px;
   line-height: 29px;
-  color: #000000;
+  color: #000;
+  overflow: hidden;
 }
