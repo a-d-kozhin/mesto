@@ -69,28 +69,11 @@ for (let i = 0; i < initialElements.length; i += 1) {
 }
 
 
+const elementLikeButton = document.querySelectorAll('.element__like-button');
 
-
-// initialElements.forEach(function (item) {
-// const initialElement = elementTemplate.cloneNode(true);
-// initialElement.querySelector('.element__image').src = initialElements[0].link;
-// initialElement.querySelector('.element__title').textContent = initialElements[0].name;
-// elements.append(initialElement);
-// });
-
-
-// initialElements.forEach(function (){
-//   const initialElement = elementTemplate.cloneNode(true);
-//   initialElement.querySelector('.element__image').src = 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg';
-// });
-
-/*
-// клонируем содержимое тега template
-const userElement = userTemplate.cloneNode(true);
-
-// наполняем содержимым
-userElement.querySelector('.user__avatar').src = 'tinyurl.com/v4pfzwy';
-userElement.querySelector('.user__name').textContent = 'Дюк Корморант';
-
-// отображаем на странице
-usersOnline.append(userElement);*/
+for (let i = 0; i < elementLikeButton.length; i += 1) {
+  elementLikeButton[i].addEventListener('click', function (evt) {
+  const eventTarget = evt.target;
+  eventTarget.classList.toggle('element__like-button_active');
+})
+;}
