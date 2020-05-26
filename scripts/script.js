@@ -1,12 +1,15 @@
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
-const form = document.querySelector('.popup__container');
+const profileForm = document.querySelector('.popup__profile-form');
+const elementForm = document.querySelector('.popup__element-form');
 const popupProfileCloseButton = document.querySelector('.popup-profile__close-button');
 const popupElementCloseButton = document.querySelector('.popup-element__close-button');
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_job');
+const elementTitleInput = document.querySelector('.popup__input_type_element-title');
+const elementUrlInput = document.querySelector('.popup__input_type_element-url');
 
 const popupProfile = document.querySelector('.popup-profile');
 const popupElement = document.querySelector('.popup-element');
@@ -30,12 +33,25 @@ function formSubmitHandlerProfile (evt) {
   popupProfile.classList.toggle('popup_opened');
 }
 
+function formSubmitHandlerElement (evt) {
+  evt.preventDefault();
+  let elementTitleInputValue = elementTitleInput.value.trim();
+  let elementUrlInputValue = elementUrlInput.value.trim();
+  const userElement = elementTemplate.cloneNode(true);
+  userElement.querySelector('.element__image').src = elementUrlInputValue;
+  userElement.querySelector('.element__title').textContent = elementTitleInputValue;
+  userElement.querySelector('.element__image').alt = elementTitleInputValue;
+  popupElement.classList.toggle('popup_opened');
+  elements.append(userElement);
+}
+
 profileEditButton.addEventListener('click', openClosePopup(popupProfile));
 popupProfileCloseButton.addEventListener('click', openClosePopup(popupProfile));
-form.addEventListener('submit', formSubmitHandlerProfile);
+profileForm.addEventListener('submit', formSubmitHandlerProfile);
 
 profileAddButton.addEventListener('click', openClosePopup(popupElement));
 popupElementCloseButton.addEventListener('click', openClosePopup(popupElement));
+elementForm.addEventListener('submit', formSubmitHandlerElement);
 //////////////////////////////////////////////////////////////////
 
 const initialElements = [
