@@ -83,13 +83,23 @@
       <p class="footer__copyright">&copy; 2020. Саша Кожин</p>
     </footer>
 
-    <section class="popup open-smoothly">
+    <section class="popup popup-profile open-smoothly">
       <form class="popup__container" name="popup-profile" action="#" method="POST">
         <h3 class="popup__title">Редактировать профиль</h3>
         <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="popup-name" required>
         <input class="popup__input popup__input_type_job" type="text" placeholder="Профессия" name="popup-job" required>
         <button type="submit" class="popup__submit-button">Сохранить</button>
-        <button type="button" class="button popup__close-button"></button>
+        <button type="button" class="button popup__close-button popup-profile__close-button"></button>
+      </form>
+    </section>  
+
+    <section class="popup popup-element open-smoothly">
+      <form class="popup__container" name="popup-new-element" action="#" method="POST">
+        <h3 class="popup__title">Новое место</h3>
+        <input class="popup__input popup__input_type_element-title" type="text" placeholder="Название" name="popup-element-title" required>
+        <input class="popup__input popup__input_type_element-url" type="text" placeholder="Ссылка на картинку" name="popup-element-url" required>
+        <button type="submit" class="popup__submit-button">Сохранить</button>
+        <button type="button" class="button popup__close-button popup-element__close-button"></button>
       </form>
     </section>  
 
