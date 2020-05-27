@@ -44,7 +44,7 @@ function formSubmitHandlerElement (evt) {
   popupElement.classList.toggle('popup_opened');
   const userElementLike = userElement.querySelector('.element__like-button')
   userElementLike.addEventListener('click', function() {userElementLike.classList.toggle('element__like-button_active')});
-  elements.append(userElement);
+  elements.prepend(userElement);
 }
 
 profileEditButton.addEventListener('click', openClosePopup(popupProfile));
