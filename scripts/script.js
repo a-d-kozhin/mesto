@@ -42,6 +42,8 @@ function formSubmitHandlerElement (evt) {
   userElement.querySelector('.element__title').textContent = elementTitleInputValue;
   userElement.querySelector('.element__image').alt = elementTitleInputValue;
   popupElement.classList.toggle('popup_opened');
+  const userElementLike = userElement.querySelector('.element__like-button')
+  userElementLike.addEventListener('click', function() {userElementLike.classList.toggle('element__like-button_active')});
   elements.append(userElement);
 }
 
