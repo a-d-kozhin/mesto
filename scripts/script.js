@@ -44,6 +44,8 @@ function formSubmitHandlerElement (evt) {
   popupElement.classList.toggle('popup_opened');
   const userElementLike = userElement.querySelector('.element__like-button')
   userElementLike.addEventListener('click', function() {userElementLike.classList.toggle('element__like-button_active')});
+  const userElementRemoveButton = userElement.querySelector('.element__remove-button');
+  userElementRemoveButton.addEventListener('click', function() {userElementRemoveButton.parentNode.remove()});
   elements.prepend(userElement);
 }
 
@@ -103,3 +105,8 @@ for (let i = 0; i < elementLikeButton.length; i += 1) {
   eventTarget.classList.toggle('element__like-button_active');
 })
 ;}
+
+const elementRemoveButton = document.querySelectorAll('.element__remove-button');
+
+for (let i = 0; i < elementRemoveButton.length; i += 1) {
+elementRemoveButton[i].addEventListener('click', function() {elementRemoveButton[i].parentNode.remove()})}
