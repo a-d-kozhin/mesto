@@ -39,43 +39,6 @@
           </div>
         </li>
         </template>
-        <!-- <li class="element">
-          <img src="images/baikal.jpg" alt="Байкал" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title">Байкал</h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li>
-
-        <li class="element">
-          <img src="images/arkhyz.jpg" alt="Архыз" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title">Архыз</h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li>
-
-        <li class="element">
-          <img src="images/dombai.jpg" alt="Домбай" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title">Домбай</h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/karelia.jpg" alt="Карелия" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title">Карелия</h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/elbrus.jpg" alt="Эльбрус" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title">Эльбрус</h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li> -->
       </ul>
 
     </main>
@@ -84,7 +47,7 @@
       <p class="footer__copyright">&copy; 2020. Саша Кожин</p>
     </footer>
 
-    <section class="popup popup-profile open-smoothly">
+    <section class="popup popup-profile">
       <form class="popup__container popup__profile-form" name="popup-profile" action="#" method="POST">
         <h3 class="popup__title">Редактировать профиль</h3>
         <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="popup-name" required>
@@ -94,7 +57,7 @@
       </form>
     </section>  
 
-    <section class="popup popup-element open-smoothly">
+    <section class="popup popup-element">
       <form class="popup__container popup__element-form" name="popup-new-element" action="#" method="POST">
         <h3 class="popup__title">Новое место</h3>
         <input class="popup__input popup__input_type_element-title" type="text" placeholder="Название" name="popup-element-title" required>
@@ -103,6 +66,14 @@
         <button type="button" class="button popup__close-button popup-element__close-button"></button>
       </form>
     </section>  
+
+    <section class="popup popup-image">
+      <div class="popup-image__wrapper">
+        <img src="" alt="" class="popup-image__image">
+        <p class="popup-image__caption"></p>
+        <button type="button" class="button popup__close-button popup-image__close-button"></button>
+      </div>
+      </section>  
 
   </div>
   <script src="scripts/script.js"></script>

@@ -4,23 +4,27 @@ const profileForm = document.querySelector('.popup__profile-form');
 const elementForm = document.querySelector('.popup__element-form');
 const popupProfileCloseButton = document.querySelector('.popup-profile__close-button');
 const popupElementCloseButton = document.querySelector('.popup-element__close-button');
+const popupWithImageCloseButton = document.querySelector('.popup-image__close-button');
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_job');
 const elementTitleInput = document.querySelector('.popup__input_type_element-title');
 const elementUrlInput = document.querySelector('.popup__input_type_element-url');
-
 const popupProfile = document.querySelector('.popup-profile');
 const popupElement = document.querySelector('.popup-element');
 
+
 function openClosePopup(popup) {
-  return function() {
+  return function() { 
     popup.classList.toggle('popup_opened');
       if (popup === popupProfile && popup.classList.contains('popup_opened')) {
+      popup.classList.toggle('open-smoothly');
       nameInput.value = profileName.textContent;
       jobInput.value = profileJob.textContent;
     }
+    if (popup === popupElement) {
+      popup.classList.toggle('open-smoothly')};
   }
 }
 
@@ -41,11 +45,13 @@ function formSubmitHandlerElement (evt) {
   userElement.querySelector('.element__image').src = elementUrlInputValue;
   userElement.querySelector('.element__title').textContent = elementTitleInputValue;
   userElement.querySelector('.element__image').alt = elementTitleInputValue;
-  popupElement.classList.toggle('popup_opened');
-  const userElementLike = userElement.querySelector('.element__like-button')
-  userElementLike.addEventListener('click', function() {userElementLike.classList.toggle('element__like-button_active')});
   const userElementRemoveButton = userElement.querySelector('.element__remove-button');
-  userElementRemoveButton.addEventListener('click', function() {userElementRemoveButton.parentNode.remove()});
+  const userElementLike = userElement.querySelector('.element__like-button')
+  const userElementImage = userElement.querySelector('.element__image')
+  userElementLike.addEventListener('click', toggleLike);
+  userElementRemoveButton.addEventListener('click', removeElement);
+  popupElement.classList.toggle('popup_opened');
+  userElementImage.addEventListener('click', getImage);
   elements.prepend(userElement);
 }
 
@@ -96,17 +102,35 @@ for (let i = 0; i < initialElements.length; i += 1) {
   elements.append(initialElement);
 }
 
+const popupWithImage = document.querySelector('.popup-image');
+const popupImage = document.querySelector('.popup-image__image');
+const popupCaption = document.querySelector('.popup-image__caption');
+const elementContainers = document.querySelectorAll('.element');
+const elementImage = document.querySelector('.element__image');
 
-const elementLikeButton = document.querySelectorAll('.element__like-button');
+function toggleLike(evt) {
+  if (evt.target.classList.contains('element__like-button')) {
+      const likeButtonOfElement = evt.target.closest('.element__like-button');
+      likeButtonOfElement.classList.add('element__like-button_active');
+  }
+}
 
-for (let i = 0; i < elementLikeButton.length; i += 1) {
-  elementLikeButton[i].addEventListener('click', function (evt) {
-  const eventTarget = evt.target;
-  eventTarget.classList.toggle('element__like-button_active');
-})
-;}
+function removeElement(evt) {
+  if (evt.target.classList.contains('element__remove-button')) {
+      const elementRemoveButton = evt.target.closest('.element__remove-button');
+      elementRemoveButton.parentNode.remove()
+  }
+}
 
-const elementRemoveButton = document.querySelectorAll('.element__remove-button');
+function getImage(evt) {
+  if (evt.target.classList.contains('element__image')) {
+    popupWithImage.classList.toggle('popup_opened');
+    popupImage.src = evt.target.src;
+    popupCaption.textContent = evt.target.alt;
+  }
+}
 
-for (let i = 0; i < elementRemoveButton.length; i += 1) {
-elementRemoveButton[i].addEventListener('click', function() {elementRemoveButton[i].parentNode.remove()})}
+elementContainers.forEach(element => element.addEventListener('click', removeElement)); 
+elementContainers.forEach(element => element.addEventListener('click', toggleLike));
+elementContainers.forEach(element => element.addEventListener('click', getImage));
+popupWithImageCloseButton.addEventListener('click', openClosePopup(popupWithImage));
