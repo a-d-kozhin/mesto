@@ -78,7 +78,7 @@ function openClosePopup(popup) {
 function toggleLike(evt) {
   if (evt.target.classList.contains('element__like-button')) {
     const likeButtonOfElement = evt.target.closest('.element__like-button');
-    likeButtonOfElement.classList.add('element__like-button_active');
+    likeButtonOfElement.classList.toggle('element__like-button_active');
   }
 }
 
