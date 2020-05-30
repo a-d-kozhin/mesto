@@ -15,7 +15,7 @@
 }
 
 @media (min-width: 582px) {
-	.popup__submit {
+	.popup__submit-button {
 		height: 50px;
 	}
 }

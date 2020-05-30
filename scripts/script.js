@@ -18,7 +18,6 @@ const elementTemplate = document.querySelector("#element");
 const popupWithImage = document.querySelector('.popup-image');
 const popupImage = document.querySelector('.popup-image__image');
 const popupCaption = document.querySelector('.popup-image__caption');
-const elementImage = document.querySelector('.element__image');
 const initialElements = [
   {
     name: 'Архыз',
@@ -51,29 +50,37 @@ function createElement(elementName, elementLink) {
   const element = elementTemplate.content.cloneNode(true);
   element.querySelector('.element__image').src = elementLink;
   element.querySelector('.element__title').textContent = elementName;
-  element.querySelector('.element__image').alt = elementName;
+  element.querySelector('.element__image').alt = `${elementName}. Фото`;
   const elementContainer = element.querySelector('.element')
   elementContainer.addEventListener('click', removeElement)
   elementContainer.addEventListener('click', toggleLike)
   elementContainer.addEventListener('click', getImage)
-  elements.prepend(element);
+  return element;
 }
 
-// создаем карточки из массива
-initialElements.forEach((item) => createElement(item.name, item.link));
+// функция добавления карточки в начало контейнера
+function renderElement(element, container) {
+  container.prepend(element); 
+}
 
-// функция открытия-закрытия попапов
-// до конца пока не разобрался, как ее применить в других функциях
-// удалось лишь повесить в конце на EventListener'ы
-function openClosePopup(popup) {
-  return function () {
-    popup.classList.toggle('popup_opened');
-    if (popup === popupProfile && popup.classList.contains('popup_opened')) {
-      nameInput.value = profileName.textContent;
-      jobInput.value = profileJob.textContent;
-    }
+// создаем карточки из массива и добавляем их в грид-контейнер
+initialElements.forEach((item) => renderElement(createElement(item.name, item.link), elements));
+
+// функции открытия-закрытия попапов
+const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened');}
+
+function viewPopupProfile() {
+  toggleClassOpened(popupProfile);
+  if (popupProfile.classList.contains('popup_opened')) {
+    nameInput.value = profileName.textContent;
+    jobInput.value = profileJob.textContent;
   }
 }
+
+const viewPopupElement = () => {toggleClassOpened(popupElement);}
+
+const viewPopupWithImage = () => {toggleClassOpened(popupWithImage);}
+
 // функция, реализующая лайки
 function toggleLike(evt) {
   if (evt.target.classList.contains('element__like-button')) {
@@ -90,41 +97,43 @@ function removeElement(evt) {
   }
 }
 
-// функция, получающая содержимое для попапа с изображением
+// функция, открывающая попап с изображением и получающая содержимое для него
 function getImage(evt) {
   if (evt.target.classList.contains('element__image')) {
-    popupWithImage.classList.toggle('popup_opened');
+    viewPopupWithImage();
     popupImage.src = evt.target.src;
-    popupCaption.textContent = evt.target.alt;
+    popupCaption.textContent = evt.target.alt.slice(0,-6);
   }
 }
 
 // функция-обработчик формы заполнения профиля
 function formSubmitHandlerProfile(evt) {
   evt.preventDefault();
-  let nameInputValue = nameInput.value.trim();
-  let jobInputValue = jobInput.value.trim();
+  const nameInputValue = nameInput.value.trim();
+  const jobInputValue = jobInput.value.trim();
   profileName.textContent = nameInputValue;
   profileJob.textContent = jobInputValue;
-  popupProfile.classList.toggle('popup_opened');
+  viewPopupProfile();
 }
 
 // функция-обработчик формы создания карточки
 function formSubmitHandlerElement(evt) {
   evt.preventDefault();
-  createElement(elementTitleInput.value.trim(), elementUrlInput.value.trim());
-  popupElement.classList.toggle('popup_opened');
+  const elementTitle = elementTitleInput.value.trim();
+  const elementUrl = elementUrlInput.value.trim();
+  renderElement(createElement(elementTitle, elementUrl), elements)
+  viewPopupElement();
 }
 
 // слушатели попапа profile
-profileEditButton.addEventListener('click', openClosePopup(popupProfile));
-popupProfileCloseButton.addEventListener('click', openClosePopup(popupProfile));
+profileEditButton.addEventListener('click', viewPopupProfile);
+popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
 
 // слушатели попапа element
-profileAddButton.addEventListener('click', openClosePopup(popupElement));
-popupElementCloseButton.addEventListener('click', openClosePopup(popupElement));
+profileAddButton.addEventListener('click', viewPopupElement);
+popupElementCloseButton.addEventListener('click', viewPopupElement);
 elementForm.addEventListener('submit', formSubmitHandlerElement);
 
 // слушатели попапа с картинкой
-popupWithImageCloseButton.addEventListener('click', openClosePopup(popupWithImage));
+popupWithImageCloseButton.addEventListener('click', viewPopupWithImage);
