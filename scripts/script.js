@@ -77,10 +77,6 @@ function viewPopupProfile() {
   }
 }
 
-const viewPopupElement = () => {toggleClassOpened(popupElement);}
-
-const viewPopupWithImage = () => {toggleClassOpened(popupWithImage);}
-
 // функция, реализующая лайки
 function toggleLike(evt) {
   if (evt.target.classList.contains('element__like-button')) {
@@ -100,7 +96,7 @@ function removeElement(evt) {
 // функция, открывающая попап с изображением и получающая содержимое для него
 function getImage(evt) {
   if (evt.target.classList.contains('element__image')) {
-    viewPopupWithImage();
+    toggleClassOpened(popupWithImage)
     popupImage.src = evt.target.src;
     popupCaption.textContent = evt.target.alt.slice(0,-6);
   }
@@ -113,7 +109,7 @@ function formSubmitHandlerProfile(evt) {
   const jobInputValue = jobInput.value.trim();
   profileName.textContent = nameInputValue;
   profileJob.textContent = jobInputValue;
-  viewPopupProfile();
+  toggleClassOpened(popupProfile)
 }
 
 // функция-обработчик формы создания карточки
@@ -122,7 +118,7 @@ function formSubmitHandlerElement(evt) {
   const elementTitle = elementTitleInput.value.trim();
   const elementUrl = elementUrlInput.value.trim();
   renderElement(createElement(elementTitle, elementUrl), elements)
-  viewPopupElement();
+  toggleClassOpened(popupElement)
 }
 
 // слушатели попапа profile
@@ -131,9 +127,9 @@ popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
 
 // слушатели попапа element
-profileAddButton.addEventListener('click', viewPopupElement);
-popupElementCloseButton.addEventListener('click', viewPopupElement);
+profileAddButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
+popupElementCloseButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 elementForm.addEventListener('submit', formSubmitHandlerElement);
 
 // слушатели попапа с картинкой
-popupWithImageCloseButton.addEventListener('click', viewPopupWithImage);
+popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
