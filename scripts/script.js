@@ -44,17 +44,18 @@ const initialElements = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-
 // функция создания карточек
 function createElement(elementName, elementLink) {
   const element = elementTemplate.content.cloneNode(true);
+  const likeButton = element.querySelector('.element__like-button')
+  const removeButton = element.querySelector('.element__remove-button')
+  const image = element.querySelector('.element__image')
   element.querySelector('.element__image').src = elementLink;
   element.querySelector('.element__title').textContent = elementName;
   element.querySelector('.element__image').alt = `${elementName}. Фото`;
-  const elementContainer = element.querySelector('.element')
-  elementContainer.addEventListener('click', removeElement)
-  elementContainer.addEventListener('click', toggleLike)
-  elementContainer.addEventListener('click', getImage)
+  removeButton.addEventListener('click', function () {(removeElement(removeButton))})
+  likeButton.addEventListener('click', function () {(toggleLike(likeButton))})
+  image.addEventListener('click', function () {(getImage(image))})
   return element;
 }
 
@@ -78,28 +79,20 @@ function viewPopupProfile() {
 }
 
 // функция, реализующая лайки
-function toggleLike(evt) {
-  if (evt.target.classList.contains('element__like-button')) {
-    const likeButtonOfElement = evt.target.closest('.element__like-button');
-    likeButtonOfElement.classList.toggle('element__like-button_active');
-  }
+function toggleLike(likeButton) {
+  likeButton.classList.toggle('element__like-button_active');
 }
 
 // функция для удаления карточек
-function removeElement(evt) {
-  if (evt.target.classList.contains('element__remove-button')) {
-    const elementRemoveButton = evt.target.closest('.element__remove-button');
-    elementRemoveButton.parentNode.remove()
-  }
+function removeElement(removeButton) {
+  removeButton.parentNode.remove()
 }
 
 // функция, открывающая попап с изображением и получающая содержимое для него
-function getImage(evt) {
-  if (evt.target.classList.contains('element__image')) {
+function getImage(image) {
     toggleClassOpened(popupWithImage)
-    popupImage.src = evt.target.src;
-    popupCaption.textContent = evt.target.alt.slice(0,-6);
-  }
+    popupImage.src = image.src;
+    popupCaption.textContent = image.alt.slice(0,-6);
 }
 
 // функция-обработчик формы заполнения профиля
@@ -121,15 +114,15 @@ function formSubmitHandlerElement(evt) {
   toggleClassOpened(popupElement)
 }
 
-// слушатели попапа profile
+// // слушатели попапа profile
 profileEditButton.addEventListener('click', viewPopupProfile);
 popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
 
-// слушатели попапа element
+// // слушатели попапа element
 profileAddButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 popupElementCloseButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 elementForm.addEventListener('submit', formSubmitHandlerElement);
 
-// слушатели попапа с картинкой
+// // слушатели попапа с картинкой
 popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
