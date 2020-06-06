@@ -75,7 +75,7 @@ const renderElement = (element, container) => {
 initialElements.forEach((item) => renderElement(createElement(item.name, item.link), elements));
 
 // функции открытия-закрытия попапов
-const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened');}
+const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened')}
 
 const viewPopupProfile = () => {
   toggleClassOpened(popupProfile);
@@ -119,6 +119,19 @@ const formSubmitHandlerElement = (evt) => {
   toggleClassOpened(popupElement)
 }
 
+// функция-обработчик нажатия на escape
+const escapeKeyHandler = (event) => {
+  const key = event.key;
+  if (key === 'Escape') {
+    if (popupWithImage.classList.contains('popup_opened')) {
+      toggleClassOpened(popupWithImage)}
+    if (popupProfile.classList.contains('popup_opened')) {
+      toggleClassOpened(popupProfile)} 
+    if (popupElement.classList.contains('popup_opened')) {
+      toggleClassOpened(popupElement)} 
+    }
+}
+
 // слушатели попапа profile
 profileEditButton.addEventListener('click', viewPopupProfile);
 popupProfileCloseButton.addEventListener('click', viewPopupProfile);
@@ -134,3 +147,6 @@ elementOverlay.addEventListener('click', function (){toggleClassOpened(popupElem
 // слушатели попапа с картинкой
 popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
 imageOverlay.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
+
+// глобальный слушатель
+document.addEventListener('keydown', function() {escapeKeyHandler(event)})
