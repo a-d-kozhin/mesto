@@ -18,6 +18,9 @@ const elementTemplate = document.querySelector("#element");
 const popupWithImage = document.querySelector('.popup-image');
 const popupImage = document.querySelector('.popup-image__image');
 const popupCaption = document.querySelector('.popup-image__caption');
+const profileOverlay = document.querySelector('.popup-profile__overlay');
+const elementOverlay = document.querySelector('.popup-element__overlay');
+const imageOverlay = document.querySelector('.popup-image__overlay');
 const initialElements = [
   {
     name: 'Архыз',
@@ -47,14 +50,14 @@ const initialElements = [
 // функция создания карточек
 function createElement(elementName, elementLink) {
   const element = elementTemplate.content.cloneNode(true);
-  const likeButton = element.querySelector('.element__like-button')
-  const removeButton = element.querySelector('.element__remove-button')
-  const image = element.querySelector('.element__image')
   element.querySelector('.element__image').src = elementLink;
   element.querySelector('.element__title').textContent = elementName;
   element.querySelector('.element__image').alt = `${elementName}. Фото`;
-  removeButton.addEventListener('click', function () {(removeElement(removeButton))})
-  likeButton.addEventListener('click', function () {(toggleLike(likeButton))})
+  const like = element.querySelector('.element__like-button')
+  const remove = element.querySelector('.element__remove-button')
+  const image = element.querySelector('.element__image')
+  remove.addEventListener('click', function () {(removeElement(remove))})
+  like.addEventListener('click', function () {(toggleLike(like))})
   image.addEventListener('click', function () {(getImage(image))})
   return element;
 }
@@ -72,7 +75,7 @@ const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened');}
 
 function viewPopupProfile() {
   toggleClassOpened(popupProfile);
-  if (popupProfile.classList.contains('popup_opened')) {
+  if (!popupProfile.classList.contains('popup_opened')) {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
   }
@@ -91,8 +94,10 @@ function removeElement(removeButton) {
 // функция, открывающая попап с изображением и получающая содержимое для него
 function getImage(image) {
     toggleClassOpened(popupWithImage)
-    popupImage.src = image.src;
-    popupCaption.textContent = image.alt.slice(0,-6);
+    if (!popupImage.classList.contains('popup_opened')) {
+      popupImage.src = image.src;
+      popupCaption.textContent = image.alt.slice(0,-6);
+    }
 }
 
 // функция-обработчик формы заполнения профиля
@@ -118,11 +123,14 @@ function formSubmitHandlerElement(evt) {
 profileEditButton.addEventListener('click', viewPopupProfile);
 popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
+profileOverlay.addEventListener('click', viewPopupProfile);
 
 // // слушатели попапа element
 profileAddButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 popupElementCloseButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 elementForm.addEventListener('submit', formSubmitHandlerElement);
+elementOverlay.addEventListener('click', function (){toggleClassOpened(popupElement)});
 
 // // слушатели попапа с картинкой
 popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
+imageOverlay.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
