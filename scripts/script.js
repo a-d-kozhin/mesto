@@ -48,22 +48,26 @@ const initialElements = [
   }
 ];
 // функция создания карточек
-function createElement(elementName, elementLink) {
+const createElement = (elementName, elementLink) => {
   const element = elementTemplate.content.cloneNode(true);
   element.querySelector('.element__image').src = elementLink;
   element.querySelector('.element__title').textContent = elementName;
   element.querySelector('.element__image').alt = `${elementName}. Фото`;
+  return element;
+}
+
+const setEventListeners = (element) => {
   const like = element.querySelector('.element__like-button')
   const remove = element.querySelector('.element__remove-button')
   const image = element.querySelector('.element__image')
   remove.addEventListener('click', function () {(removeElement(remove))})
   like.addEventListener('click', function () {(toggleLike(like))})
-  image.addEventListener('click', function () {(getImage(image))})
-  return element;
+  image.addEventListener('click', function () {(viewImage(image))})
 }
 
 // функция добавления карточки в начало контейнера
-function renderElement(element, container) {
+const renderElement = (element, container) => {
+  setEventListeners(element);
   container.prepend(element); 
 }
 
@@ -73,7 +77,7 @@ initialElements.forEach((item) => renderElement(createElement(item.name, item.li
 // функции открытия-закрытия попапов
 const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened');}
 
-function viewPopupProfile() {
+const viewPopupProfile = () => {
   toggleClassOpened(popupProfile);
   if (!popupProfile.classList.contains('popup_opened')) {
     nameInput.value = profileName.textContent;
@@ -82,17 +86,13 @@ function viewPopupProfile() {
 }
 
 // функция, реализующая лайки
-function toggleLike(likeButton) {
-  likeButton.classList.toggle('element__like-button_active');
-}
+const toggleLike = (likeButton) => {likeButton.classList.toggle('element__like-button_active');}
 
 // функция для удаления карточек
-function removeElement(removeButton) {
-  removeButton.parentNode.remove()
-}
+const removeElement = (removeButton) => {removeButton.parentNode.remove()}
 
 // функция, открывающая попап с изображением и получающая содержимое для него
-function getImage(image) {
+const viewImage = (image) => {
     toggleClassOpened(popupWithImage)
     if (!popupImage.classList.contains('popup_opened')) {
       popupImage.src = image.src;
@@ -101,7 +101,7 @@ function getImage(image) {
 }
 
 // функция-обработчик формы заполнения профиля
-function formSubmitHandlerProfile(evt) {
+const formSubmitHandlerProfile = (evt) => {
   evt.preventDefault();
   const nameInputValue = nameInput.value.trim();
   const jobInputValue = jobInput.value.trim();
@@ -111,7 +111,7 @@ function formSubmitHandlerProfile(evt) {
 }
 
 // функция-обработчик формы создания карточки
-function formSubmitHandlerElement(evt) {
+const formSubmitHandlerElement = (evt) => {
   evt.preventDefault();
   const elementTitle = elementTitleInput.value.trim();
   const elementUrl = elementUrlInput.value.trim();
@@ -119,18 +119,18 @@ function formSubmitHandlerElement(evt) {
   toggleClassOpened(popupElement)
 }
 
-// // слушатели попапа profile
+// слушатели попапа profile
 profileEditButton.addEventListener('click', viewPopupProfile);
 popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
 profileOverlay.addEventListener('click', viewPopupProfile);
 
-// // слушатели попапа element
+// слушатели попапа element
 profileAddButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 popupElementCloseButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
 elementForm.addEventListener('submit', formSubmitHandlerElement);
 elementOverlay.addEventListener('click', function (){toggleClassOpened(popupElement)});
 
-// // слушатели попапа с картинкой
+// слушатели попапа с картинкой
 popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
 imageOverlay.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
