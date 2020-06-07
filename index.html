@@ -40,10 +40,12 @@
     
     <section class="popup popup-profile">
       <div class="popup__overlay popup-profile__overlay"></div>
-      <form class="popup__container popup__profile-form" name="popup-profile" action="#" method="POST">
+      <form class="popup__container popup__profile-form" name="edit-profile" action="#" method="POST" novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
-        <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="popup-name" required>
-        <input class="popup__input popup__input_type_job" type="text" placeholder="Профессия" name="popup-job" required>
+        <input class="popup__input popup__input_type_name popup__input_type_error" type="text" placeholder="Имя" name="name" required minlength="2" maxlength="40" pattern = "[А-ЯЁа-яёA-Za-z-–—\s + \d0*]*">
+        <span id="name-error" class="error error_place_popup">Текст ошибки</span>
+        <input class="popup__input popup__input_type_job popup__input_type_error type="text" placeholder="Профессия" name="job" required minlength="2" maxlength="200">
+        <span id="job-error" class="error error_place_popup">Текст ошибки</span>
         <button type="submit" class="popup__submit-button">Сохранить</button>
         <button type="button" class="button popup__close-button popup-profile__close-button"></button>
       </form>
@@ -51,12 +53,14 @@
     
     <section class="popup popup-element">
       <div class="popup__overlay popup-element__overlay"></div>
-      <form class="popup__container popup__element-form" name="popup-new-element" action="#" method="POST">
+      <form class="popup__container popup__element-form" name="new-element" action="#" method="POST" novalidate> 
         <h3 class="popup__title">Новое место</h3>
-        <input class="popup__input popup__input_type_element-title" type="text" placeholder="Название"
-        name="popup-element-title" required>
-        <input class="popup__input popup__input_type_element-url" type="text" placeholder="Ссылка на картинку"
-        name="popup-element-url" required>
+        <input class="popup__input popup__input_type_title popup__input_type_error" type="text" placeholder="Название"
+        name="title" required>
+        <span id="title-error" class="error error_place_popup">Текст ошибки</span>
+        <input class="popup__input popup__input_type_url popup__input_type_error" type="text" placeholder="Ссылка на картинку"
+        name="url" required>
+        <span id="url-error" class="error error_place_popup">Текст ошибки</span>
         <button type="submit" class="popup__submit-button">Сохранить</button>
         <button type="button" class="button popup__close-button popup-element__close-button"></button>
       </form>

@@ -1,0 +1,10 @@
+@import url(../../blocks/error/_place_popup/error_place_popup.css);
+
+.error {
+  display: block;
+  font-weight: normal;
+  font-size: 12px;
+  height: 15px;
+  line-height: 15px;
+  color: #FF0000;
+}
