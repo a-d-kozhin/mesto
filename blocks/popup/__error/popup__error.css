@@ -1,7 +1,7 @@
-@import url(../../blocks/error/_place_popup/error_place_popup.css);
-
-.error {
+.popup__error {
+  margin: 5px 0 25px 0;
   display: block;
+  visibility: hidden;
   font-weight: normal;
   font-size: 12px;
   height: 15px;

@@ -1,7 +1,7 @@
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
-const profileForm = document.querySelector('.popup__profile-form');
-const elementForm = document.querySelector('.popup__element-form');
+const profileForm = document.querySelector('.popup__form_type_profile');
+const elementForm = document.querySelector('.popup__form_type_element ');
 const popupProfileCloseButton = document.querySelector('.popup-profile__close-button');
 const popupElementCloseButton = document.querySelector('.popup-element__close-button');
 const popupWithImageCloseButton = document.querySelector('.popup-image__close-button');
@@ -9,12 +9,11 @@ const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_job');
-const elementTitleInput = document.querySelector('.popup__input_type_element-title');
-const elementUrlInput = document.querySelector('.popup__input_type_element-url');
+const elementTitleInput = document.querySelector('.popup__input_type_title');
+const elementUrlInput = document.querySelector('.popup__input_type_url');
 const popupProfile = document.querySelector('.popup-profile');
 const popupElement = document.querySelector('.popup-element');
 const elements = document.querySelector(".elements");
-const elementTemplate = document.querySelector("#element");
 const popupWithImage = document.querySelector('.popup-image');
 const popupImage = document.querySelector('.popup-image__image');
 const popupCaption = document.querySelector('.popup-image__caption');
@@ -49,6 +48,7 @@ const initialElements = [
 ];
 // функция создания карточек
 const createElement = (elementName, elementLink) => {
+  const elementTemplate = document.querySelector("#element");
   const element = elementTemplate.content.cloneNode(true);
   element.querySelector('.element__image').src = elementLink;
   element.querySelector('.element__title').textContent = elementName;
@@ -79,7 +79,7 @@ const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened')}
 
 const viewPopupProfile = () => {
   toggleClassOpened(popupProfile);
-  if (!popupProfile.classList.contains('popup_opened')) {
+  if (popupProfile.classList.contains('popup_opened')) {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
   }
@@ -150,3 +150,65 @@ imageOverlay.addEventListener('click', function (){toggleClassOpened(popupWithIm
 
 // глобальный слушатель
 document.addEventListener('keydown', function() {escapeKeyHandler(event)})
+
+const enableValidation = (parameters) => {
+  const formElements = Array.from(document.querySelectorAll(parameters.formSelector));
+  formElements.forEach(formElement => {
+    const inputElements = Array.from(formElement.querySelectorAll(parameters.inputSelector));
+    inputElements.forEach(element => {element.addEventListener('input', function (event) {handleInput(event, parameters.errorClass, parameters.inputErrorClass)})})
+
+    formElement.addEventListener('input', function () {toggleSubmitState(formElement, parameters.submitButtonSelector, parameters.inactiveButtonClass)})
+
+
+  })
+}
+
+const handleInput = (e, errorClass, inputErrorClass) => {
+  const input = e.target
+  const inputIsValid = input.checkValidity();
+  if (inputIsValid) {
+    hideErrorMessage(input, errorClass, inputErrorClass);
+  }
+  else {
+    showErrorMessage(input, errorClass, input.validationMessage, inputErrorClass);
+  }
+}
+
+
+const showErrorMessage = (input, errorClass, errorMessage, inputErrorClass) => {
+  const errorElement = document.querySelector(`#${input.id}-error`);
+  errorElement.classList.add(errorClass);
+  errorElement.textContent = errorMessage;
+  input.classList.add(inputErrorClass);
+}
+
+const hideErrorMessage = (input, errorClass, inputErrorClass) => {
+  const errorElement = document.querySelector(`#${input.id}-error`);
+  errorElement.classList.remove(errorClass);
+  errorElement.textContent = '';
+  input.classList.remove(inputErrorClass);
+}
+
+const toggleSubmitState = (formElement, submitButtonSelector, inactiveButtonClass) => {
+  const submit = formElement.querySelector(submitButtonSelector);
+  const inactive = formElement.querySelector(inactiveButtonClass);
+  const formIsInvalid = !formElement.checkValidity();
+  console.log(submit, inactive, formIsInvalid)
+  if (formIsInvalid === true) {
+    submit.classList.add(inactiveButtonClass)
+    submit.disabled = true;
+  }
+  else {
+    submit.classList.remove(inactiveButtonClass)
+    submit.disabled = false;
+  }
+}
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
