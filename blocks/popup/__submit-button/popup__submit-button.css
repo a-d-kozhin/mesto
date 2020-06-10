@@ -19,3 +19,7 @@
 		height: 50px;
 	}
 }
+
+.popup__submit-button[disabled] {
+	pointer-events: none;
+}

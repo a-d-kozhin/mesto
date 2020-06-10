@@ -13,7 +13,7 @@ const elementTitleInput = document.querySelector('.popup__input_type_title');
 const elementUrlInput = document.querySelector('.popup__input_type_url');
 const popupProfile = document.querySelector('.popup-profile');
 const popupElement = document.querySelector('.popup-element');
-const elements = document.querySelector(".elements");
+const elements = document.querySelector('.elements');
 const popupWithImage = document.querySelector('.popup-image');
 const popupImage = document.querySelector('.popup-image__image');
 const popupCaption = document.querySelector('.popup-image__caption');
@@ -46,6 +46,7 @@ const initialElements = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
+
 // функция создания карточек
 const createElement = (elementName, elementLink) => {
   const elementTemplate = document.querySelector("#element");
@@ -56,26 +57,27 @@ const createElement = (elementName, elementLink) => {
   return element;
 }
 
+// функция, добавляющая все необходимые слушатели на карточку
 const setEventListeners = (element) => {
   const like = element.querySelector('.element__like-button')
   const remove = element.querySelector('.element__remove-button')
   const image = element.querySelector('.element__image')
-  remove.addEventListener('click', function () {(removeElement(remove))})
-  like.addEventListener('click', function () {(toggleLike(like))})
-  image.addEventListener('click', function () {(viewImage(image))})
+  remove.addEventListener('click', function () { (removeElement(remove)) })
+  like.addEventListener('click', function () { (toggleLike(like)) })
+  image.addEventListener('click', function () { (viewImage(image)) })
 }
 
-// функция добавления карточки в начало контейнера
+// функция добавления готовой карточки в начало контейнера
 const renderElement = (element, container) => {
   setEventListeners(element);
-  container.prepend(element); 
+  container.prepend(element);
 }
 
 // создаем карточки из массива и добавляем их в грид-контейнер
 initialElements.forEach((item) => renderElement(createElement(item.name, item.link), elements));
 
 // функции открытия-закрытия попапов
-const toggleClassOpened = (popup) => {popup.classList.toggle('popup_opened')}
+const toggleClassOpened = (popup) => { popup.classList.toggle('popup_opened') }
 
 const viewPopupProfile = () => {
   toggleClassOpened(popupProfile);
@@ -86,18 +88,18 @@ const viewPopupProfile = () => {
 }
 
 // функция, реализующая лайки
-const toggleLike = (likeButton) => {likeButton.classList.toggle('element__like-button_active');}
+const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like-button_active'); }
 
 // функция для удаления карточек
-const removeElement = (removeButton) => {removeButton.parentNode.remove()}
+const removeElement = (removeButton) => { removeButton.parentNode.remove() }
 
 // функция, открывающая попап с изображением и получающая содержимое для него
 const viewImage = (image) => {
-    toggleClassOpened(popupWithImage)
-    if (!popupImage.classList.contains('popup_opened')) {
-      popupImage.src = image.src;
-      popupCaption.textContent = image.alt.slice(0,-6);
-    }
+  toggleClassOpened(popupWithImage)
+  if (!popupImage.classList.contains('popup_opened')) {
+    popupImage.src = image.src;
+    popupCaption.textContent = image.alt.slice(0, -6);
+  }
 }
 
 // функция-обработчик формы заполнения профиля
@@ -117,6 +119,7 @@ const formSubmitHandlerElement = (evt) => {
   const elementUrl = elementUrlInput.value.trim();
   renderElement(createElement(elementTitle, elementUrl), elements)
   toggleClassOpened(popupElement)
+  elementForm.reset()
 }
 
 // функция-обработчик нажатия на escape
@@ -124,12 +127,16 @@ const escapeKeyHandler = (event) => {
   const key = event.key;
   if (key === 'Escape') {
     if (popupWithImage.classList.contains('popup_opened')) {
-      toggleClassOpened(popupWithImage)}
-    if (popupProfile.classList.contains('popup_opened')) {
-      toggleClassOpened(popupProfile)} 
-    if (popupElement.classList.contains('popup_opened')) {
-      toggleClassOpened(popupElement)} 
+      toggleClassOpened(popupWithImage)
     }
+    if (popupProfile.classList.contains('popup_opened')) {
+      toggleClassOpened(popupProfile)
+    }
+    if (popupElement.classList.contains('popup_opened')) {
+      elementForm.reset();
+      toggleClassOpened(popupElement)
+    }
+  }
 }
 
 // слушатели попапа profile
@@ -139,76 +146,20 @@ profileForm.addEventListener('submit', formSubmitHandlerProfile);
 profileOverlay.addEventListener('click', viewPopupProfile);
 
 // слушатели попапа element
-profileAddButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
-popupElementCloseButton.addEventListener('click', function (){toggleClassOpened(popupElement)});
+profileAddButton.addEventListener('click', function () {
+  toggleClassOpened(popupElement)
+  toggleSubmitState(elementForm, obj.submitButtonSelector, obj.inactiveButtonClass)
+});
+popupElementCloseButton.addEventListener('click', function () { toggleClassOpened(popupElement) });
 elementForm.addEventListener('submit', formSubmitHandlerElement);
-elementOverlay.addEventListener('click', function (){toggleClassOpened(popupElement)});
+elementOverlay.addEventListener('click', function () {
+  elementForm.reset();
+  toggleClassOpened(popupElement)
+});
 
 // слушатели попапа с картинкой
-popupWithImageCloseButton.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
-imageOverlay.addEventListener('click', function (){toggleClassOpened(popupWithImage)});
+popupWithImageCloseButton.addEventListener('click', function () {toggleClassOpened(popupWithImage) });
+imageOverlay.addEventListener('click', function () { toggleClassOpened(popupWithImage) });
 
 // глобальный слушатель
-document.addEventListener('keydown', function() {escapeKeyHandler(event)})
-
-const enableValidation = (parameters) => {
-  const formElements = Array.from(document.querySelectorAll(parameters.formSelector));
-  formElements.forEach(formElement => {
-    const inputElements = Array.from(formElement.querySelectorAll(parameters.inputSelector));
-    inputElements.forEach(element => {element.addEventListener('input', function (event) {handleInput(event, parameters.errorClass, parameters.inputErrorClass)})})
-
-    formElement.addEventListener('input', function () {toggleSubmitState(formElement, parameters.submitButtonSelector, parameters.inactiveButtonClass)})
-
-
-  })
-}
-
-const handleInput = (e, errorClass, inputErrorClass) => {
-  const input = e.target
-  const inputIsValid = input.checkValidity();
-  if (inputIsValid) {
-    hideErrorMessage(input, errorClass, inputErrorClass);
-  }
-  else {
-    showErrorMessage(input, errorClass, input.validationMessage, inputErrorClass);
-  }
-}
-
-
-const showErrorMessage = (input, errorClass, errorMessage, inputErrorClass) => {
-  const errorElement = document.querySelector(`#${input.id}-error`);
-  errorElement.classList.add(errorClass);
-  errorElement.textContent = errorMessage;
-  input.classList.add(inputErrorClass);
-}
-
-const hideErrorMessage = (input, errorClass, inputErrorClass) => {
-  const errorElement = document.querySelector(`#${input.id}-error`);
-  errorElement.classList.remove(errorClass);
-  errorElement.textContent = '';
-  input.classList.remove(inputErrorClass);
-}
-
-const toggleSubmitState = (formElement, submitButtonSelector, inactiveButtonClass) => {
-  const submit = formElement.querySelector(submitButtonSelector);
-  const inactive = formElement.querySelector(inactiveButtonClass);
-  const formIsInvalid = !formElement.checkValidity();
-  console.log(submit, inactive, formIsInvalid)
-  if (formIsInvalid === true) {
-    submit.classList.add(inactiveButtonClass)
-    submit.disabled = true;
-  }
-  else {
-    submit.classList.remove(inactiveButtonClass)
-    submit.disabled = false;
-  }
-}
-
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit-button',
-  inactiveButtonClass: 'popup__submit-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
+document.addEventListener('keydown', function () {escapeKeyHandler(event) })

@@ -31,40 +31,45 @@
 
       <ul class="elements">
       </ul>
-      
+
     </main>
-    
+
     <footer class="footer">
       <p class="footer__copyright">&copy; 2020. Саша Кожин</p>
     </footer>
-    
+
     <section class="popup popup-profile">
       <div class="popup__overlay popup-profile__overlay"></div>
-      <form class="popup__container popup__form popup__form_type_profile" name="edit-profile" action="#" method="POST" novalidate>
+      <form class="popup__container popup__form popup__form_type_profile" name="edit-profile" action="#" method="POST"
+        novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
-        <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="name" required minlength="2" maxlength="40"  id="name-input" pattern = "[А-ЯЁа-яёA-Za-z-–—\s + \d0*]*">
+        <input class="popup__input popup__input_type_name" type="text" placeholder="Имя" name="name" required
+          minlength="2" maxlength="40" id="name-input" pattern="[А-ЯЁа-яёA-Za-z-–—\s + \d0*]*">
         <span id="name-input-error" class="popup__error">Текст ошибки</span>
-        <input class="popup__input popup__input_type_job" type="text" placeholder="Профессия" name="job" required minlength="2" maxlength="200" id="job-input">
+        <input class="popup__input popup__input_type_job" type="text" placeholder="Профессия" name="job" required
+          minlength="2" maxlength="200" id="job-input">
         <span id="job-input-error" class="popup__error">Текст ошибки</span>
         <button type="submit" class="popup__submit-button">Сохранить</button>
         <button type="button" class="button popup__close-button popup-profile__close-button"></button>
       </form>
     </section>
-    
+
     <section class="popup popup-element">
       <div class="popup__overlay popup-element__overlay"></div>
-      <form class="popup__container popup__form popup__form_type_element" name="new-element" action="#" method="POST" novalidate> 
+      <form class="popup__container popup__form popup__form_type_element" name="new-element" action="#" method="POST"
+        novalidate>
         <h3 class="popup__title">Новое место</h3>
-        <input class="popup__input popup__input_type_title" type="text" placeholder="Название"
-        name="title" required id="title-input" minlength="1" maxlength="30" >
+        <input class="popup__input popup__input_type_title" type="text" placeholder="Название" name="title" required
+          id="title-input" minlength="1" maxlength="30">
         <span id="title-input-error" class="popup__error">Текст ошибки</span>
-        <input class="popup__input popup__input_type_url" type="url" placeholder="Ссылка на картинку" id="url-input" name="url" required>
+        <input class="popup__input popup__input_type_url" type="url" placeholder="Ссылка на картинку" id="url-input"
+          name="url" required>
         <span id="url-input-error" class="popup__error">Текст ошибки</span>
         <button type="submit" class="popup__submit-button">Сохранить</button>
         <button type="button" class="button popup__close-button popup-element__close-button"></button>
       </form>
     </section>
-    
+
     <section class="popup popup-image">
       <div class="popup__overlay popup-image__overlay"></div>
       <div class="popup-image__wrapper">
@@ -73,19 +78,23 @@
         <button type="button" class="button popup__close-button popup-image__close-button"></button>
       </div>
     </section>
-    
+
   </div>
-      <template id="element">
-        <li class="element">
-          <button type="button" class="button element__remove-button"></button>
-          <img src="" alt="" class="element__image">
-          <div class="element__wrapper">
-            <h2 class="element__title"></h2>
-            <button type="button" class="button element__like-button"></button>
-          </div>
-        </li>
-      </template>
+
+  <template id="element">
+    <li class="element">
+      <button type="button" class="button element__remove-button"></button>
+      <img src="" alt="" class="element__image">
+      <div class="element__wrapper">
+        <h2 class="element__title"></h2>
+        <button type="button" class="button element__like-button"></button>
+      </div>
+    </li>
+  </template>
+
   <script src="scripts/script.js"></script>
+  <script src="scripts/validate.js"></script>
+  
 </body>
 
 </html>
