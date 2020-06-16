@@ -1,4 +1,5 @@
 @import url(../vendor/normalize.css);
+@import url(../vendor/font/inter.css);
 @import url(../blocks/project/project.css);
 @import url(../blocks/page/page.css);
 @import url(../blocks/link/link.css);
@@ -14,26 +15,3 @@
 @import url(../blocks/popup/__input/_type_error/popup__input_type_error.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup-image/popup-image.css);
-
-@font-face {
-  src: url(../fonts/Inter-Regular.woff) format('woff');
-  src: url(../fonts/Inter-Regular.woff2) format('woff2');
-  src: url(../fonts/Inter-Regular.ttf) format('truetype');
-  font-family: 'Inter';
-}
-
-@font-face {
-  src: url(../fonts/Inter-Black.woff) format('woff');
-  src: url(../fonts/Inter-Black.woff2) format('woff2');
-  src: url(../fonts/Inter-Black.ttf) format('truetype');
-  font-family: 'Inter';
-  font-weight: 900;
-}
-
-@font-face {
-  src: url(../fonts/inter-medium.woff) format('woff');
-  src: url(../fonts/inter-medium.woff2) format('woff2');
-  src: url(../fonts/inter-medium.ttf) format('truetype');
-  font-family: 'Inter';
-  font-weight: 500;
-}

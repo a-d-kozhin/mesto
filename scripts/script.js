@@ -57,6 +57,21 @@ const createElement = (elementName, elementLink) => {
   return element;
 }
 
+// функция, реализующая лайки
+const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like-button_active'); }
+
+// функция для удаления карточек
+const removeElement = (removeButton) => { removeButton.parentNode.remove() }
+
+// функция, открывающая попап с изображением и получающая содержимое для него
+const viewImage = (image) => {
+  toggleClassOpened(popupWithImage)
+  if (!popupImage.classList.contains('popup_opened')) {
+    popupImage.src = image.src;
+    popupCaption.textContent = image.alt.slice(0, -6);
+  }
+}
+
 // функция, добавляющая все необходимые слушатели на карточку
 const setEventListeners = (element) => {
   const like = element.querySelector('.element__like-button')
@@ -84,21 +99,6 @@ const viewPopupProfile = () => {
   if (popupProfile.classList.contains('popup_opened')) {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
-  }
-}
-
-// функция, реализующая лайки
-const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like-button_active'); }
-
-// функция для удаления карточек
-const removeElement = (removeButton) => { removeButton.parentNode.remove() }
-
-// функция, открывающая попап с изображением и получающая содержимое для него
-const viewImage = (image) => {
-  toggleClassOpened(popupWithImage)
-  if (!popupImage.classList.contains('popup_opened')) {
-    popupImage.src = image.src;
-    popupCaption.textContent = image.alt.slice(0, -6);
   }
 }
 
@@ -146,20 +146,20 @@ profileForm.addEventListener('submit', formSubmitHandlerProfile);
 profileOverlay.addEventListener('click', viewPopupProfile);
 
 // слушатели попапа element
-profileAddButton.addEventListener('click', function () {
+profileAddButton.addEventListener('click', () => {
   toggleClassOpened(popupElement)
   toggleSubmitState(elementForm, obj.submitButtonSelector, obj.inactiveButtonClass)
 });
-popupElementCloseButton.addEventListener('click', function () { toggleClassOpened(popupElement) });
+popupElementCloseButton.addEventListener('click', () => { toggleClassOpened(popupElement) });
 elementForm.addEventListener('submit', formSubmitHandlerElement);
-elementOverlay.addEventListener('click', function () {
+elementOverlay.addEventListener('click', () => {
   elementForm.reset();
   toggleClassOpened(popupElement)
 });
 
 // слушатели попапа с картинкой
-popupWithImageCloseButton.addEventListener('click', function () {toggleClassOpened(popupWithImage) });
-imageOverlay.addEventListener('click', function () { toggleClassOpened(popupWithImage) });
+popupWithImageCloseButton.addEventListener('click', () => {toggleClassOpened(popupWithImage) });
+imageOverlay.addEventListener('click', () => { toggleClassOpened(popupWithImage) });
 
 // глобальный слушатель
-document.addEventListener('keydown', function () {escapeKeyHandler(event) })
+document.addEventListener('keydown', (event) => {escapeKeyHandler(event) });
