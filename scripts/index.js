@@ -20,76 +20,6 @@ const popupCaption = document.querySelector('.popup-image__caption');
 const profileOverlay = document.querySelector('.popup-profile__overlay');
 const elementOverlay = document.querySelector('.popup-element__overlay');
 const imageOverlay = document.querySelector('.popup-image__overlay');
-const initialElements = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-// функция создания карточек
-const createElement = (elementName, elementLink) => {
-  const elementTemplate = document.querySelector("#element");
-  const element = elementTemplate.content.cloneNode(true);
-  element.querySelector('.element__image').src = elementLink;
-  element.querySelector('.element__title').textContent = elementName;
-  element.querySelector('.element__image').alt = `${elementName}. Фото`;
-  return element;
-}
-
-// функция, реализующая лайки
-const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like-button_active'); }
-
-// функция для удаления карточек
-const removeElement = (removeButton) => { removeButton.parentNode.remove() }
-
-// функция, открывающая попап с изображением и получающая содержимое для него
-const viewImage = (image) => {
-  toggleClassOpened(popupWithImage)
-  if (!popupImage.classList.contains('popup_opened')) {
-    popupImage.src = image.src;
-    popupCaption.textContent = image.alt.slice(0, -6);
-  }
-}
-
-// функция, добавляющая все необходимые слушатели на карточку
-const setEventListeners = (element) => {
-  const like = element.querySelector('.element__like-button')
-  const remove = element.querySelector('.element__remove-button')
-  const image = element.querySelector('.element__image')
-  remove.addEventListener('click', function () { (removeElement(remove)) })
-  like.addEventListener('click', function () { (toggleLike(like)) })
-  image.addEventListener('click', function () { (viewImage(image)) })
-}
-
-// функция добавления готовой карточки в начало контейнера
-const renderElement = (element, container) => {
-  setEventListeners(element);
-  container.prepend(element);
-}
-
-// создаем карточки из массива и добавляем их в грид-контейнер
-initialElements.forEach((item) => renderElement(createElement(item.name, item.link), elements));
 
 // функции открытия-закрытия попапов
 const toggleClassOpened = (popup) => { popup.classList.toggle('popup_opened') }
@@ -117,7 +47,9 @@ const formSubmitHandlerElement = (evt) => {
   evt.preventDefault();
   const elementTitle = elementTitleInput.value.trim();
   const elementUrl = elementUrlInput.value.trim();
-  renderElement(createElement(elementTitle, elementUrl), elements)
+  const newElement = new Element(elementTitle, elementUrl, '#element');
+  const element = newElement.createElement();
+  elements.prepend(element);
   toggleClassOpened(popupElement)
   elementForm.reset()
 }
