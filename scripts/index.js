@@ -13,16 +13,13 @@ const elementTitleInput = document.querySelector('.popup__input_type_title');
 const elementUrlInput = document.querySelector('.popup__input_type_url');
 const popupProfile = document.querySelector('.popup-profile');
 const popupElement = document.querySelector('.popup-element');
-const elements = document.querySelector('.elements');
-const popupWithImage = document.querySelector('.popup-image');
-const popupImage = document.querySelector('.popup-image__image');
-const popupCaption = document.querySelector('.popup-image__caption');
+export const popupWithImage = document.querySelector('.popup-image');
 const profileOverlay = document.querySelector('.popup-profile__overlay');
 const elementOverlay = document.querySelector('.popup-element__overlay');
 const imageOverlay = document.querySelector('.popup-image__overlay');
 
 // функции открытия-закрытия попапов
-const toggleClassOpened = (popup) => { popup.classList.toggle('popup_opened') }
+export const toggleClassOpened = (popup) => { popup.classList.toggle('popup_opened') };
 
 const viewPopupProfile = () => {
   toggleClassOpened(popupProfile);
@@ -49,9 +46,9 @@ const formSubmitHandlerElement = (evt) => {
   const elementUrl = elementUrlInput.value.trim();
   const newElement = new Element(elementTitle, elementUrl, '#element');
   const element = newElement.createElement();
-  elements.prepend(element);
+  document.querySelector('.elements').prepend(element);
   toggleClassOpened(popupElement)
-  elementForm.reset()
+  validateElement.resetForm();
 }
 
 // функция-обработчик нажатия на escape
@@ -72,22 +69,22 @@ const escapeKeyHandler = (event) => {
 }
 
 // слушатели попапа profile
-profileEditButton.addEventListener('click', viewPopupProfile);
+profileEditButton.addEventListener('click', () => {
+  validateProfile.resetForm();
+  viewPopupProfile()});
 popupProfileCloseButton.addEventListener('click', viewPopupProfile);
 profileForm.addEventListener('submit', formSubmitHandlerProfile);
 profileOverlay.addEventListener('click', viewPopupProfile);
 
 // слушатели попапа element
 profileAddButton.addEventListener('click', () => {
-  toggleClassOpened(popupElement)
-  toggleSubmitState(elementForm, obj.submitButtonSelector, obj.inactiveButtonClass)
+  validateElement._toggleSubmitState();
+  validateElement.resetForm();
+  toggleClassOpened(popupElement);
 });
 popupElementCloseButton.addEventListener('click', () => { toggleClassOpened(popupElement) });
 elementForm.addEventListener('submit', formSubmitHandlerElement);
-elementOverlay.addEventListener('click', () => {
-  elementForm.reset();
-  toggleClassOpened(popupElement)
-});
+elementOverlay.addEventListener('click', () => { toggleClassOpened(popupElement) });
 
 // слушатели попапа с картинкой
 popupWithImageCloseButton.addEventListener('click', () => {toggleClassOpened(popupWithImage) });
@@ -95,3 +92,23 @@ imageOverlay.addEventListener('click', () => { toggleClassOpened(popupWithImage)
 
 // глобальный слушатель
 document.addEventListener('keydown', (event) => {escapeKeyHandler(event) });
+
+// импортируем объект настроек, объект с начальными карточками, класс валидации и класс карточки
+import {obj} from "./data.js";
+import {FormValidator} from "./FormValidator.js";
+import {Element} from "./Card.js";
+import {initialElements} from "./data.js";
+
+// создаем карточки из массива и добавляем их в грид-контейнер
+initialElements.forEach((item) => {
+  const newElement = new Element(item.name, item.link, '#element');
+  const element = newElement.createElement();
+  document.querySelector('.elements').prepend(element);
+  }
+);
+
+// включаем валидацию для обеих форм
+const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
+validateProfile.enableValidation();
+const validateElement = new FormValidator(obj, '.popup__form_type_element');
+validateElement.enableValidation();

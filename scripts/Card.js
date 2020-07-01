@@ -1,32 +1,9 @@
-const initialElements = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+import {initialElements} from "./data.js";
+import {toggleClassOpened} from "./index.js";
+import {popupWithImage} from "./index.js";
 
-  // класс карточки
-class Element {
+// класс карточки
+  export class Element {
   constructor(elementName, elementLink, templateSelector) {
     this._name = elementName;
     this._link = elementLink;
@@ -59,8 +36,8 @@ class Element {
   _handleImageClick() {
     toggleClassOpened(popupWithImage);
     if (!this._image.classList.contains('popup_opened')) {
-      popupImage.src = this._image.src;
-      popupCaption.textContent = this._image.alt.slice(0, -6);
+      document.querySelector('.popup-image__image').src = this._image.src;
+      document.querySelector('.popup-image__caption').textContent = this._image.alt.slice(0, -6);
     }
   }
 
@@ -85,11 +62,3 @@ class Element {
     return this._element;
   }
 }
-
-  // создаем карточки из массива и добавляем их в грид-контейнер
-  initialElements.forEach((item) => {
-  const newElement = new Element(item.name, item.link, '#element');
-  const element = newElement.createElement();
-  elements.append(element);
-  }
-);
