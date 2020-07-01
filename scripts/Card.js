@@ -1,4 +1,3 @@
-import {initialElements} from "./data.js";
 import {toggleClassOpened} from "./index.js";
 import {popupWithImage} from "./index.js";
 

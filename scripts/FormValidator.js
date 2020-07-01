@@ -21,21 +21,21 @@ export class FormValidator {
     }
   }
   
-  _showErrorMessage = (input, errorMessage) => {
+  _showErrorMessage(input, errorMessage) {
     const errorElement = document.querySelector(`#${input.id}-error`);
     errorElement.classList.add(this._errorClass);
     errorElement.textContent = errorMessage;
     input.classList.add(this._inputErrorClass);
   }
 
-  _hideErrorMessage = (input) => {
+  _hideErrorMessage(input) {
     const errorElement = document.querySelector(`#${input.id}-error`);
     errorElement.classList.remove(this._errorClass);
     errorElement.textContent = '';
     input.classList.remove(this._inputErrorClass);
   }
 
-  _toggleSubmitState = () => {
+  _toggleSubmitState() {
     const submit = this._formElement.querySelector(this._submitButtonSelector);
     const formIsInvalid = !this._formElement.checkValidity();
     if (formIsInvalid) {
@@ -48,12 +48,12 @@ export class FormValidator {
     }
   }
 
-  resetForm = () => {
+  resetForm() {
     this._inputElements.forEach(element => this._hideErrorMessage(element));
     this._formElement.reset();
   }
 
-  enableValidation = () => {
+  enableValidation() {
       this._inputElements.forEach(element => {element.addEventListener('input', (event) => { this._handleInput(event) }) })
       this._formElement.addEventListener('input', () => { this._toggleSubmitState() })    
   }
