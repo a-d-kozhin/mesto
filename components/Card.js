@@ -1,8 +1,7 @@
-import {toggleClassOpened} from "./index.js";
-import {popupWithImage} from "./index.js";
+import {toggleClassOpened, popupWithImage} from "../utils/utils.js";
 
 // класс карточки
-  export class Element {
+  export class Card {
   constructor(elementName, elementLink, templateSelector) {
     this._name = elementName;
     this._link = elementLink;

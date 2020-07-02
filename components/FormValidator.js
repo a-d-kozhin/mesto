@@ -10,17 +10,18 @@ export class FormValidator {
     this._formSelector = options.formSelector;
     this._inputElements = Array.from(this._formElement.querySelectorAll(this._inputSelector));
   }
+
   // приватный метод обработки инпута
-  _handleInput(e) {
-    this._input = e.target
-    this._inputIsValid = this._input.checkValidity();
-    if (this._inputIsValid) {
+  _handleInput(input) {
+    this._input = input;
+    if ( this._input.checkValidity() ) {
       this._hideErrorMessage(this._input);
     }
     else {
       this._showErrorMessage(this._input, this._input.validationMessage);
     }
   }
+
   // приватный метод для показа системных ошибок
   _showErrorMessage(input, errorMessage) {
     const errorElement = document.querySelector(`#${input.id}-error`);
@@ -28,6 +29,7 @@ export class FormValidator {
     errorElement.textContent = errorMessage;
     input.classList.add(this._inputErrorClass);
   }
+
   // приватный метод для скрытия системных ошибок
   _hideErrorMessage(input) {
     const errorElement = document.querySelector(`#${input.id}-error`);
@@ -35,6 +37,7 @@ export class FormValidator {
     errorElement.textContent = '';
     input.classList.remove(this._inputErrorClass);
   }
+
   // приватный метод для включения/отключения сабмита формы
   _toggleSubmitState() {
     const submit = this._formElement.querySelector(this._submitButtonSelector);
@@ -43,19 +46,21 @@ export class FormValidator {
       submit.classList.add(this._inactiveButtonClass)
       submit.disabled = true;
     }
-    else {
+    if (!formIsInvalid) {
       submit.classList.remove(this._inactiveButtonClass)
       submit.disabled = false;
     }
   }
+
   // публичный метод для очистки формы и ошибок валидации
   resetForm() {
     this._inputElements.forEach(element => this._hideErrorMessage(element));
     this._formElement.reset();
   }
+  
   // публичный метод, включающий валидацию формы
   enableValidation() {
-      this._inputElements.forEach(element => {element.addEventListener('input', (event) => { this._handleInput(event) }) })
+      this._inputElements.forEach(element => {element.addEventListener('input', (event) => { this._handleInput(element) }) })
       this._formElement.addEventListener('input', () => { this._toggleSubmitState() })    
   }
 }
