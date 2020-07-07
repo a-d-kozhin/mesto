@@ -1,4 +1,4 @@
-import {toggleClassOpened, popupWithImage} from "../utils/utils.js";
+import {popupWithImage} from "../utils/utils.js";
 
 // класс карточки
   export class Card {

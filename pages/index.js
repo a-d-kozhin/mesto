@@ -1,7 +1,10 @@
-import {profileName, profileJob, nameInput, jobInput, popupProfile, popupElement, popupWithImage, toggleClassOpened} from '../utils/utils.js';
+import {profileName, profileJob, nameInput, jobInput, popupWithImage} from '../utils/utils.js';
 import {obj, initialElements} from "../utils/data.js";
 import {FormValidator} from "../components/FormValidator.js";
 import {Card} from "../components/Card.js";
+import {Popup} from "../components/Popup.js";
+
+const popupElement = new Popup('.popup-element');
 
 // создаем карточки из массива и добавляем их в грид-контейнер
 initialElements.forEach((item) => {
@@ -62,11 +65,11 @@ document.querySelector('.popup-profile__overlay').addEventListener('click', view
 document.querySelector('.profile__add-button').addEventListener('click', () => {
   validateElement._toggleSubmitState();
   validateElement.resetForm();
-  toggleClassOpened(popupElement);
+  popupElement.open();
 });
-document.querySelector('.popup-element__close-button').addEventListener('click', () => { toggleClassOpened(popupElement) });
+document.querySelector('.popup-element__close-button').addEventListener('click', () => {popupElement.close();});
 document.querySelector('.popup__form_type_element').addEventListener('submit', formSubmitHandlerElement);
-document.querySelector('.popup-element__overlay').addEventListener('click', () => { toggleClassOpened(popupElement) });
+document.querySelector('.popup-element__overlay').addEventListener('click', () => {popupElement.close();});
 
 // слушатели попапа с картинкой
 document.querySelector('.popup-image__close-button').addEventListener('click', () => {toggleClassOpened(popupWithImage) });
