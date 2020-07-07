@@ -1,11 +1,10 @@
-import {popupWithImage} from "../utils/utils.js";
-
 // класс карточки
   export class Card {
-  constructor(elementName, elementLink, templateSelector) {
+  constructor(elementName, elementLink, templateSelector, handleCardClick) {
     this._name = elementName;
     this._link = elementLink;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   // приватный метод получения шаблона карточки
@@ -30,20 +29,11 @@ import {popupWithImage} from "../utils/utils.js";
     this._element = null;
   }
 
-  // приватный метод для раскрытия попапа с картинкой
-  _handleImageClick() {
-    toggleClassOpened(popupWithImage);
-    if (!this._image.classList.contains('popup_opened')) {
-      document.querySelector('.popup-image__image').src = this._image.src;
-      document.querySelector('.popup-image__caption').textContent = this._image.alt.slice(0, -6);
-    }
-  }
-
   // приватный метод расстановки обработчиков
   _setEventListeners() {
     this._remove.addEventListener('click', () => { this._handleRemoveClick() })
     this._like.addEventListener('click', () => { this._handleLikeClick() })
-    this._image.addEventListener('click', () => { this._handleImageClick() })
+    this._image.addEventListener('click', () => {this._handleCardClick(this._image)})
   }
 
   // публичный метод, возвращающий готовую карточку

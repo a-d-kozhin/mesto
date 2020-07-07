@@ -1,14 +1,11 @@
-import {profileName, profileJob, nameInput, jobInput, popupWithImage} from '../utils/utils.js';
+import {profileName, profileJob, nameInput, jobInput, popupWithImage, handleCardClick, popupElement} from '../utils/utils.js';
 import {obj, initialElements} from "../utils/data.js";
 import {FormValidator} from "../components/FormValidator.js";
 import {Card} from "../components/Card.js";
-import {Popup} from "../components/Popup.js";
-
-const popupElement = new Popup('.popup-element');
 
 // создаем карточки из массива и добавляем их в грид-контейнер
 initialElements.forEach((item) => {
-  const newElement = new Card(item.name, item.link, '#element');
+  const newElement = new Card(item.name, item.link, '#element', handleCardClick);
   const element = newElement.createElement();
   document.querySelector('.elements').prepend(element);
   }
