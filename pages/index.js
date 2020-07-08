@@ -1,7 +1,9 @@
-import {profileName, profileJob, nameInput, jobInput, popupWithImage, handleCardClick, popupElement} from '../utils/utils.js';
+import {profileName, profileJob, nameInput, jobInput, popupWithImage, handleCardClick} from '../utils/utils.js';
 import {obj, initialElements} from "../utils/data.js";
 import {FormValidator} from "../components/FormValidator.js";
 import {Card} from "../components/Card.js";
+import {UserInfo} from '../components/UserInfo.js';
+import {PopupWithForm} from '../components/PopupWithForm.js';
 
 // создаем карточки из массива и добавляем их в грид-контейнер
 initialElements.forEach((item) => {
@@ -17,46 +19,41 @@ validateProfile.enableValidation();
 const validateElement = new FormValidator(obj, '.popup__form_type_element');
 validateElement.enableValidation();
 
-// функция открытия-закрытия попапа profile
-export const viewPopupProfile = () => {
-  toggleClassOpened(popupProfile);
-  if (popupProfile.classList.contains('popup_opened')) {
-    nameInput.value = profileName.textContent;
-    jobInput.value = profileJob.textContent;
-  }
-}
+// включаем функционал редактирования профиля
+const profileUserInfo = new UserInfo(profileName, profileJob);
 
-// функция-обработчик формы заполнения профиля
-export const formSubmitHandlerProfile = (evt) => {
+// callback самбита формы профиля
+const formSubmitHandlerProfile = (evt) => {
   evt.preventDefault();
-  const nameInputValue = nameInput.value.trim();
-  const jobInputValue = jobInput.value.trim();
-  profileName.textContent = nameInputValue;
-  profileJob.textContent = jobInputValue;
-  toggleClassOpened(popupProfile)
+  profileUserInfo.setUserInfo();
+  popupProfile.close();
 }
 
-// функция-обработчик формы создания новой карточки
-export const formSubmitHandlerElement = (evt) => {
+// callback самбита формы добавления новой карточки
+const formSubmitHandlerElement = (evt) => {
   evt.preventDefault();
   const elementTitleInput = document.querySelector('.popup__input_type_title');
   const elementUrlInput = document.querySelector('.popup__input_type_url');
   const elementTitle = elementTitleInput.value.trim();
   const elementUrl = elementUrlInput.value.trim();
-  const newElement = new Card(elementTitle, elementUrl, '#element');
+  const newElement = new Card(elementTitle, elementUrl, '#element', handleCardClick);
   const element = newElement.createElement();
   document.querySelector('.elements').prepend(element);
-  toggleClassOpened(popupElement)
+  popupElement.close();
   document.querySelector('.popup__form_type_element').reset();
 }
+
+export const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
+export const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
 
 // слушатели попапа profile
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
   validateProfile.resetForm();
-  viewPopupProfile()});
-document.querySelector('.popup-profile__close-button').addEventListener('click', viewPopupProfile);
+  profileUserInfo.getUserInfo();
+  popupProfile.open();
+});
 document.querySelector('.popup__form_type_profile').addEventListener('submit', formSubmitHandlerProfile);
-document.querySelector('.popup-profile__overlay').addEventListener('click', viewPopupProfile);
+document.querySelector('.popup-profile__overlay').addEventListener('click', () => popupProfile.close());
 
 // слушатели попапа element
 document.querySelector('.profile__add-button').addEventListener('click', () => {
@@ -64,10 +61,8 @@ document.querySelector('.profile__add-button').addEventListener('click', () => {
   validateElement.resetForm();
   popupElement.open();
 });
-document.querySelector('.popup-element__close-button').addEventListener('click', () => {popupElement.close();});
 document.querySelector('.popup__form_type_element').addEventListener('submit', formSubmitHandlerElement);
-document.querySelector('.popup-element__overlay').addEventListener('click', () => {popupElement.close();});
+document.querySelector('.popup-element__overlay').addEventListener('click', () => popupElement.close());
 
 // слушатели попапа с картинкой
-document.querySelector('.popup-image__close-button').addEventListener('click', () => {toggleClassOpened(popupWithImage) });
-document.querySelector('.popup-image__overlay').addEventListener('click', () => { toggleClassOpened(popupWithImage) });
+document.querySelector('.popup-image__overlay').addEventListener('click', () => popupWithImage.close());
