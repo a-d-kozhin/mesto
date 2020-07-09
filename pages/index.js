@@ -48,15 +48,15 @@ const formSubmitHandlerElement = (evt) => {
   const elementUrl = elementUrlInput.value.trim();
   const newElement = new Card(elementTitle, elementUrl, '#element', handleCardClick);
   const element = newElement.createElement();
-  document.querySelector('.elements').prepend(element);
+  cardsList.setItem(element);
   popupElement.close();
-  document.querySelector('.popup__form_type_element').reset();
+  validateElement.resetForm();
 }
 
 // создаем по экземпляру каждого попапа
-export const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
-export const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
-export const popupWithImage = new PopupWithImage('.popup-image');
+const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
+const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
+const popupWithImage = new PopupWithImage('.popup-image');
 
 // слушатели попапа profile
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
