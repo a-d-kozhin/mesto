@@ -1,17 +1,27 @@
-import {profileName, profileJob, nameInput, jobInput, popupWithImage, handleCardClick} from '../utils/utils.js';
-import {obj, initialElements} from "../utils/data.js";
-import {FormValidator} from "../components/FormValidator.js";
-import {Card} from "../components/Card.js";
-import {UserInfo} from '../components/UserInfo.js';
-import {PopupWithForm} from '../components/PopupWithForm.js';
+import { profileName, profileJob } from '../utils/constants.js';
+import { obj, initialElements } from "../utils/data.js";
+import { FormValidator } from "../components/FormValidator.js";
+import { Card } from "../components/Card.js";
+import { UserInfo } from '../components/UserInfo.js';
+import { PopupWithForm } from '../components/PopupWithForm.js';
+import { PopupWithImage } from '../components/PopupWithImage.js';
+import { Section } from '../components/Section.js';
+
+// объявляем функцию клика по карточке для открытия попапа
+const handleCardClick = (name, link) => {
+  popupWithImage.open(name, link);
+}
 
 // создаем карточки из массива и добавляем их в грид-контейнер
-initialElements.forEach((item) => {
-  const newElement = new Card(item.name, item.link, '#element', handleCardClick);
-  const element = newElement.createElement();
-  document.querySelector('.elements').prepend(element);
-  }
-);
+const cardsList = new Section({
+  data: initialElements,
+  renderer: (item) => {
+    const newElement = new Card(item.name, item.link, '#element', handleCardClick);
+    const element = newElement.createElement();
+    cardsList.setItem(element);
+  },
+}, '.elements');
+cardsList.renderItems();
 
 // включаем валидацию для обеих форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
@@ -22,7 +32,7 @@ validateElement.enableValidation();
 // включаем функционал редактирования профиля
 const profileUserInfo = new UserInfo(profileName, profileJob);
 
-// callback самбита формы профиля
+// callback самбита формы редактирования профиля
 const formSubmitHandlerProfile = (evt) => {
   evt.preventDefault();
   profileUserInfo.setUserInfo();
@@ -43,8 +53,10 @@ const formSubmitHandlerElement = (evt) => {
   document.querySelector('.popup__form_type_element').reset();
 }
 
+// создаем по экземпляру каждого попапа
 export const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
 export const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
+export const popupWithImage = new PopupWithImage('.popup-image');
 
 // слушатели попапа profile
 document.querySelector('.profile__edit-button').addEventListener('click', () => {

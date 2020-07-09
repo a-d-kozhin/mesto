@@ -1,4 +1,7 @@
-# Проект 6: Mesto Russia 
+# Проект 8: Mesto Russia 
+
+# Ссылка
+https://a-d-kozhin.github.io/mesto/
 
 # О проекте
 В данном проекте использованы:
@@ -7,7 +10,7 @@
   - Flexbox
   - Grid Layout
   - Семантическая разметка
-  - Базовый Javascript
+  - Javascript в рамках парадигмы ООП
 
 Данный проект – именная фотогалерея.
 
@@ -26,6 +29,3 @@
   - 768px
   - 425px
   - 320px
-
-# Ссылка
-https://a-d-kozhin.github.io/mesto/
