@@ -1,11 +1,12 @@
-import { profileName, profileJob } from '../utils/constants.js';
-import { obj, initialElements } from "../utils/data.js";
-import { FormValidator } from "../components/FormValidator.js";
-import { Card } from "../components/Card.js";
-import { UserInfo } from '../components/UserInfo.js';
-import { PopupWithForm } from '../components/PopupWithForm.js';
-import { PopupWithImage } from '../components/PopupWithImage.js';
-import { Section } from '../components/Section.js';
+import './styles/index.css';
+import { profileName, profileJob } from './utils/constants.js';
+import { obj, initialElements } from "./utils/data.js";
+import { FormValidator } from "./components/FormValidator.js";
+import { Card } from "./components/Card.js";
+import { UserInfo } from './components/UserInfo.js';
+import { PopupWithForm } from './components/PopupWithForm.js';
+import { PopupWithImage } from './components/PopupWithImage.js';
+import { Section } from './components/Section.js';
 
 // объявляем функцию клика по карточке для открытия попапа
 const handleCardClick = (name, link) => {
