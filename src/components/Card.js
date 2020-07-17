@@ -25,7 +25,7 @@
 
   // приватный метод для обработки удаления
   _handleRemoveClick() {
-    this._remove.parentNode.remove()
+    this._element.remove()
     this._element = null;
   }
 

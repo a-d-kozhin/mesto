@@ -15,7 +15,6 @@ export class Popup {
   open() {
     this._popup.classList.add(this._openedClass);
     document.addEventListener('keydown', this._handleEscClose);
-    this.setEventListeners();
   }
 
   // публичный метод закрытия попапа и удаления обработчика
@@ -35,6 +34,6 @@ export class Popup {
 
   // публичный метод для установки обработчика на кнопку close каждого попапа
   setEventListeners() {
-    this._closeButton.addEventListener('click', this.close, {once: true})
+    this._closeButton.addEventListener('click', this.close)
   }
 }

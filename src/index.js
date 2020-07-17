@@ -1,5 +1,5 @@
 import './styles/index.css';
-import { profileName, profileJob } from './utils/constants.js';
+import { profileName, profileJob, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage} from './utils/constants.js';
 import { obj, initialElements } from "./utils/data.js";
 import { FormValidator } from "./components/FormValidator.js";
 import { Card } from "./components/Card.js";
@@ -27,31 +27,42 @@ cardsList.renderItems();
 // включаем валидацию для обеих форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
 validateProfile.enableValidation();
+
 const validateElement = new FormValidator(obj, '.popup__form_type_element');
 validateElement.enableValidation();
 
 // включаем функционал редактирования профиля
-const profileUserInfo = new UserInfo(profileName, profileJob);
+const userInfo = new UserInfo(profileName, profileJob);
 
-// callback самбита формы редактирования профиля
-const formSubmitHandlerProfile = (evt) => {
-  evt.preventDefault();
-  profileUserInfo.setUserInfo();
+// функционал сабмита формы редактирования профиля
+const formSubmitHandlerProfile = (data) => {
+  userInfo.setUserInfo(data);
   popupProfile.close();
 }
 
-// callback самбита формы добавления новой карточки
-const formSubmitHandlerElement = (evt) => {
-  evt.preventDefault();
-  const elementTitleInput = document.querySelector('.popup__input_type_title');
-  const elementUrlInput = document.querySelector('.popup__input_type_url');
-  const elementTitle = elementTitleInput.value.trim();
-  const elementUrl = elementUrlInput.value.trim();
-  const newElement = new Card(elementTitle, elementUrl, '#element', handleCardClick);
+// функционал сабмита формы добавления новой карточки
+const formSubmitHandlerElement = (data) => {
+  const newElement = new Card(data.title, data.url, '#element', handleCardClick);
   const element = newElement.createElement();
   cardsList.setItem(element);
   popupElement.close();
   validateElement.resetForm();
+}
+
+// обработчик кнопки редактирования профиля
+const editProfileHandler = () => {
+  validateProfile.resetForm();
+  const profileData = userInfo.getUserInfo();
+  nameInput.value = profileData.name;
+  jobInput.value = profileData.job;
+  popupProfile.open();
+}
+
+// обработчик кнопки добавления новой карточки
+const addElementHandler = () => {
+  validateElement._toggleSubmitState();
+  validateElement.resetForm();
+  popupElement.open();
 }
 
 // создаем по экземпляру каждого попапа
@@ -59,23 +70,18 @@ const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfil
 const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
 const popupWithImage = new PopupWithImage('.popup-image');
 
-// слушатели попапа profile
-document.querySelector('.profile__edit-button').addEventListener('click', () => {
-  validateProfile.resetForm();
-  profileUserInfo.getUserInfo();
-  popupProfile.open();
-});
-document.querySelector('.popup__form_type_profile').addEventListener('submit', formSubmitHandlerProfile);
-document.querySelector('.popup-profile__overlay').addEventListener('click', () => popupProfile.close());
+// добавляем попапам обработчики
+popupProfile.setEventListeners();
+popupElement.setEventListeners();
+popupWithImage.setEventListeners();
 
-// слушатели попапа element
-document.querySelector('.profile__add-button').addEventListener('click', () => {
-  validateElement._toggleSubmitState();
-  validateElement.resetForm();
-  popupElement.open();
-});
-document.querySelector('.popup__form_type_element').addEventListener('submit', formSubmitHandlerElement);
-document.querySelector('.popup-element__overlay').addEventListener('click', () => popupElement.close());
+// добавляем слушатели попапа profile
+editProfile.addEventListener('click', editProfileHandler);
+overlayPopupProfile.addEventListener('click', () => popupProfile.close());
 
-// слушатели попапа с картинкой
-document.querySelector('.popup-image__overlay').addEventListener('click', () => popupWithImage.close());
+// добавляем слушатели попапа element
+addElement.addEventListener('click', addElementHandler);
+overlayPopupElement.addEventListener('click', () => popupElement.close());
+
+// добавляем слушатель попапа с картинкой
+overlayPopupWithImage.addEventListener('click', () => popupWithImage.close());
