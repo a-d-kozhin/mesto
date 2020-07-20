@@ -1,28 +1,37 @@
 import './index.css';
-import { profileName, profileJob, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage} from '../utils/constants.js';
-import { obj, initialElements } from "../utils/data.js";
+import { profileName, profileJob, profileAvatar, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage} from '../utils/constants.js';
+import { obj, initialElements, config } from "../utils/data.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
 import { UserInfo } from '../components/UserInfo.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { Section } from '../components/Section.js';
+import { Api } from '../components/Api.js';
 
-// объявляем функцию клика по карточке для открытия попапа
-const handleCardClick = (name, link) => {
-  popupWithImage.open(name, link);
-}
-
-// создаем карточки из массива и добавляем их в грид-контейнер
 const cardsList = new Section({
-  data: initialElements,
   renderer: (item) => {
     const newElement = new Card(item.name, item.link, '#element', handleCardClick);
     const element = newElement.createElement();
     cardsList.setItem(element);
   },
 }, '.elements');
-cardsList.renderItems();
+
+// включаем функционал редактирования профиля
+const userInfo = new UserInfo(profileName, profileJob);
+
+const api = new Api(config);
+api.getInitialCards()
+  .then(result => cardsList.renderItems(result));
+api.getInfo()
+  .then(result => userInfo.setUserInfo(result));
+
+
+
+// объявляем функцию клика по карточке для открытия попапа
+const handleCardClick = (name, link) => {
+  popupWithImage.open(name, link);
+}
 
 // включаем валидацию для обеих форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
@@ -31,13 +40,13 @@ validateProfile.enableValidation();
 const validateElement = new FormValidator(obj, '.popup__form_type_element');
 validateElement.enableValidation();
 
-// включаем функционал редактирования профиля
-const userInfo = new UserInfo(profileName, profileJob);
+
 
 // функционал сабмита формы редактирования профиля
 const formSubmitHandlerProfile = (data) => {
   userInfo.setUserInfo(data);
   popupProfile.close();
+  api.editInfo(userInfo.getUserInfo());
 }
 
 // функционал сабмита формы добавления новой карточки
@@ -54,7 +63,7 @@ const editProfileHandler = () => {
   validateProfile.resetForm();
   const profileData = userInfo.getUserInfo();
   nameInput.value = profileData.name;
-  jobInput.value = profileData.job;
+  jobInput.value = profileData.about;
   popupProfile.open();
 }
 

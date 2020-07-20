@@ -1,0 +1,59 @@
+export class Api {
+  constructor({ url, headers = {} }) {
+    this.url = url;
+    this.headers = headers;
+    this.authorization = headers.authorization;
+  }
+
+  _handleError(error) {
+    console.error(`Oops, an error occured: ${error}`)
+    return Promise.reject(error.message)
+  }
+  
+  getInfo() {
+    return fetch(`${this.url}users/me`, {headers: this.headers})
+    .then( (response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+      .catch(error => _handleError(error))
+    }
+
+  getInitialCards() {
+    return fetch(`${this.url}cards`, {headers: this.headers})
+    .then( (response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+    .catch(error => _handleError(error))
+    }
+
+  editInfo(obj) {
+    return fetch(`${this.url}users/me`, 
+    { method: 'PATCH',
+      headers: {
+        authorization: '9b4159b0-f593-4984-be9b-af6528533bd7',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: obj.name,
+        about: obj.about
+      })
+    })
+    .then((response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+    .catch(error => _handleError(error))
+    }
+  
+  }

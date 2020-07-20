@@ -1,5 +1,6 @@
 export const profileName = document.querySelector('.profile__name');
 export const profileJob = document.querySelector('.profile__job');
+export const profileAvatar = document.querySelector('.profile__avatar');
 export const nameInput = document.querySelector('.popup__input_type_name');
 export const jobInput = document.querySelector('.popup__input_type_job');
 export const editProfile = document.querySelector('.profile__edit-button');

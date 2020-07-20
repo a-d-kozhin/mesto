@@ -9,13 +9,13 @@ export class UserInfo {
   getUserInfo() {
     this._profileData = {};
     this._profileData.name = this._profileName.textContent;
-    this._profileData.job = this._profileJob.textContent;
+    this._profileData.about = this._profileJob.textContent;
     return this._profileData;
   }
 
   // публичный метод для замены данных в профиле на основании инпутов
   setUserInfo(obj) {
     this._profileName.textContent = obj.name;
-    this._profileJob.textContent = obj.job;
+    this._profileJob.textContent = obj.about;
   }
 }
