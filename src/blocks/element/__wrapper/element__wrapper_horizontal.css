@@ -1,4 +1,4 @@
-.element__wrapper {
+.element__wrapper_horizontal {
   display: flex;
   justify-content: space-between;
   align-items: center;

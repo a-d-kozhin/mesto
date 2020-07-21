@@ -17,5 +17,6 @@ export class UserInfo {
   setUserInfo(obj) {
     this._profileName.textContent = obj.name;
     this._profileJob.textContent = obj.about;
+    this.myId = obj._id;
   }
 }

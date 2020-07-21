@@ -1,0 +1,5 @@
+.element__wrapper_vertical {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}

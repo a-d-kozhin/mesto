@@ -1,9 +1,11 @@
 @import url(../element/__image/element__image.css);
 @import url(../element/__title/element__title.css);
-@import url(../element/__wrapper/element__wrapper.css);
+@import url(../element/__wrapper/element__wrapper_horizontal.css);
+@import url(../element/__wrapper/element__wrapper_vertical.css);
 @import url(../element/__like-button/element__like-button.css);
 @import url(../element/__like-button/element__like-button_active.css);
 @import url(../element/__remove-button/element__remove-button.css);
+@import url(../element/__likes-count/element__likes-count.css);
 
 .element {
   border-radius: 10px;

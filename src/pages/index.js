@@ -9,24 +9,22 @@ import { PopupWithImage } from '../components/PopupWithImage.js';
 import { Section } from '../components/Section.js';
 import { Api } from '../components/Api.js';
 
+// включаем функционал редактирования профиля
+const userInfo = new UserInfo(profileName, profileJob);
+
 const cardsList = new Section({
   renderer: (item) => {
-    const newElement = new Card(item.name, item.link, '#element', handleCardClick);
-    const element = newElement.createElement();
+    const newElement = new Card('#element', handleCardClick, userInfo.myId);
+    const element = newElement.createElement(item);
     cardsList.setItem(element);
   },
 }, '.elements');
-
-// включаем функционал редактирования профиля
-const userInfo = new UserInfo(profileName, profileJob);
 
 const api = new Api(config);
 api.getInitialCards()
   .then(result => cardsList.renderItems(result));
 api.getInfo()
-  .then(result => userInfo.setUserInfo(result));
-
-
+  .then(result => userInfo.setUserInfo(result))
 
 // объявляем функцию клика по карточке для открытия попапа
 const handleCardClick = (name, link) => {
@@ -51,9 +49,11 @@ const formSubmitHandlerProfile = (data) => {
 
 // функционал сабмита формы добавления новой карточки
 const formSubmitHandlerElement = (data) => {
-  const newElement = new Card(data.title, data.url, '#element', handleCardClick);
-  const element = newElement.createElement();
-  cardsList.setItem(element);
+  api.sendElement(data)
+    .then(result => {
+      const newElement = new Card('#element', handleCardClick)
+      return newElement.createElement(result)
+    })
   popupElement.close();
   validateElement.resetForm();
 }
