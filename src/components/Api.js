@@ -78,5 +78,28 @@ export class Api {
     })
     .then(response => {return response})
     .catch(error => console.error(error))
+    }
+
+  changeAvatar(obj) {
+    return fetch(`${this.url}users/me/avatar`, 
+    { method: 'PATCH',
+      headers: {
+        authorization: '9b4159b0-f593-4984-be9b-af6528533bd7',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: obj.avatar
+      })
+    })
+    .then((response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+    .then(response => {return response})
+    .catch(error => console.error(error))
     }  
+
   }

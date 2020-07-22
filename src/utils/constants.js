@@ -8,3 +8,4 @@ export const addElement = document.querySelector('.profile__add-button');
 export const overlayPopupProfile = document.querySelector('.popup-profile__overlay');
 export const overlayPopupElement = document.querySelector('.popup-element__overlay');
 export const overlayPopupWithImage = document.querySelector('.popup-image__overlay');
+export const overlayPopupAvatar = document.querySelector('.popup-avatar__overlay');
