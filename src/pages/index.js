@@ -1,11 +1,12 @@
 import './index.css';
-import { profileName, profileJob, profileAvatar, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage, overlayPopupAvatar} from '../utils/constants.js';
+import { profileName, profileJob, profileAvatar, profileAvatarButton, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage, overlayPopupAvatar, overlayPopupConfirm} from '../utils/constants.js';
 import { obj, config } from "../utils/data.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
 import { UserInfo } from '../components/UserInfo.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
+import { PopupConfirm } from '../components/PopupConfirm.js';
 import { Section } from '../components/Section.js';
 import { Api } from '../components/Api.js';
 
@@ -14,7 +15,7 @@ const userInfo = new UserInfo(profileName, profileJob, profileAvatar);
 
 const cardsList = new Section({
   renderer: (item) => {
-    const newElement = new Card('#element', handleCardClick, userInfo.myId);
+    const newElement = new Card('#element', handleCardClick, handleRemoveClick, userInfo.myId);
     const element = newElement.createElement(item);
     cardsList.setItem(element);
   },
@@ -33,6 +34,12 @@ Promise.all([api.getInfo(), api.getInitialCards()])
 const handleCardClick = (name, link) => {
   popupWithImage.open(name, link);
 }
+
+const handleRemoveClick = (item) => {
+  popupConfirm.open();
+  console.log(item);
+}
+
 
 // включаем валидацию для форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
@@ -54,8 +61,10 @@ const formSubmitHandlerElement = (data) => {
   api.sendElement(data)
     .then(result => {
       const newElement = new Card('#element', handleCardClick)
-      return newElement.createElement(result)
+      const element = newElement.createElement(result)
+      return element
     })
+    .then(element => сardsList.setItem(element))
   popupElement.close();
   validateElement.resetForm();
 }
@@ -95,12 +104,14 @@ const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfil
 const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
 const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
 const popupWithImage = new PopupWithImage('.popup-image');
+const popupConfirm = new PopupConfirm('.popup-confirm', function(){} );
 
 // добавляем попапам обработчики
 popupProfile.setEventListeners();
 popupElement.setEventListeners();
 popupWithImage.setEventListeners();
 popupAvatar.setEventListeners();
+popupConfirm.setEventListeners();
 
 // добавляем слушатели попапа profile
 editProfile.addEventListener('click', editProfileHandler);
@@ -114,5 +125,8 @@ overlayPopupElement.addEventListener('click', () => popupElement.close());
 overlayPopupWithImage.addEventListener('click', () => popupWithImage.close());
 
 // добавляем слушатели попапа avatar
-profileAvatar.addEventListener('click', changeAvatarHandler)
+profileAvatarButton.addEventListener('click', changeAvatarHandler)
 overlayPopupAvatar.addEventListener('click', () => popupAvatar.close());
+
+// добавляем слушатель попапа с картинкой
+overlayPopupConfirm.addEventListener('click', () => popupConfirm.close());

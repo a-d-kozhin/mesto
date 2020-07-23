@@ -102,4 +102,16 @@ export class Api {
     .catch(error => console.error(error))
     }  
 
+    removeCard(_id) {
+      return fetch(`${this.url}cards${_id}`, {headers: this.headers})
+      .then( (response) => {
+        if(response.ok) {
+          return(response.json())
+        } else {
+          console.error(`oops, status:${response.status}`)
+        }
+      })
+        .catch(error => this._handleError(error))
+      }
+
   }

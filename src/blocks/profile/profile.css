@@ -5,6 +5,7 @@
 @import url(../../blocks/profile/__info/profile__info.css);
 @import url(../../blocks/profile/__add-button/profile__add-button.css);
 @import url(../../blocks/profile/__avatar-button/profile__avatar-button.css);
+@import url(../../blocks/profile/__avatar-edit-icon/profile__avatar-edit-icon.css);
 
 .profile {
 	width: 100%;

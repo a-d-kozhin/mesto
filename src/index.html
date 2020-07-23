@@ -18,9 +18,12 @@
     <main class="content">
 
       <section class="profile">
+        
         <div>
-          <img alt="Аватар профиля" class="profile__avatar">
-          <button type="button" class="profile__avatar-button"></button>
+          <button type="button" class="profile__avatar-button">
+            <img src="./images/edit-avatar.svg" class="profile__avatar-edit-icon">
+            <img alt="Аватар профиля" class="profile__avatar">
+          </button>
         </div>
 
         <div class="profile__info">
@@ -84,6 +87,15 @@
         <button type="submit" class="popup__submit-button popup-avatar__submit_button">Сохранить</button>
         <button type="button" class="button popup__close-button popup-avatar__close-button"></button>
       </form>
+    </section>
+
+    <section class="popup popup-confirm">
+      <div class="popup__overlay popup-confirm__overlay"></div>
+      <div class="popup__container popup-confirm__container">
+        <h3 class="popup__title">Вы уверены?</h3>
+        <button type="button" class="popup__submit-button popup-confirm__button">Да</button>
+        <button type="button" class="button popup__close-button popup-confirm__close-button"></button>
+      </div>
     </section>
 
     <section class="popup popup-image">

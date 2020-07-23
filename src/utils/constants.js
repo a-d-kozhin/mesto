@@ -1,6 +1,7 @@
 export const profileName = document.querySelector('.profile__name');
 export const profileJob = document.querySelector('.profile__job');
 export const profileAvatar = document.querySelector('.profile__avatar');
+export const profileAvatarButton = document.querySelector('.profile__avatar-button');
 export const nameInput = document.querySelector('.popup__input_type_name');
 export const jobInput = document.querySelector('.popup__input_type_job');
 export const editProfile = document.querySelector('.profile__edit-button');
@@ -9,3 +10,4 @@ export const overlayPopupProfile = document.querySelector('.popup-profile__overl
 export const overlayPopupElement = document.querySelector('.popup-element__overlay');
 export const overlayPopupWithImage = document.querySelector('.popup-image__overlay');
 export const overlayPopupAvatar = document.querySelector('.popup-avatar__overlay');
+export const overlayPopupConfirm = document.querySelector('.popup-confirm__overlay');

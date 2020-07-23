@@ -1,3 +1,31 @@
 .profile__avatar-button {
-  background: url(../../../images/edit-avatar.svg)
+  width: 120px;
+  height: 120px;
+  border: 1px solid red;
+  cursor: pointer;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}
+
+.profile__avatar-button::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  right: 0; 
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  opacity: 1;
+  transition: .6s;
+}
+
+.profile__avatar-button:hover::after {
+  background: rgba(0, 0, 0, .8);
+}
+
+.profile__avatar-button:hover .profile__avatar-edit-icon {
+  opacity: 1;
 }
