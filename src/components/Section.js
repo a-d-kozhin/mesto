@@ -13,6 +13,6 @@ export class Section {
 
   // публичный метод, принимающий DOM-элемент и добавляющий его в контейнер
   setItem(element) {
-    this._container.append(element);
+    this._container.prepend(element);
   }
 }

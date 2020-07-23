@@ -1,5 +1,5 @@
 import './index.css';
-import { profileName, profileJob, profileAvatar, profileAvatarButton, nameInput, jobInput, editProfile, addElement, overlayPopupProfile, overlayPopupElement, overlayPopupWithImage, overlayPopupAvatar, overlayPopupConfirm} from '../utils/constants.js';
+import { profileName, profileJob, profileAvatar, profileAvatarButton, nameInput, jobInput, editProfile, addElement, elementSubmitButton, profileSubmitButton, avatarSubmitButton} from '../utils/constants.js';
 import { obj, config } from "../utils/data.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
@@ -13,46 +13,85 @@ import { Api } from '../components/Api.js';
 // включаем функционал редактирования профиля
 const userInfo = new UserInfo(profileName, profileJob, profileAvatar);
 
-// функция рендера карточки
-function renderElement(item) {
-  const newElement = new Card('#element', handleCardClick, handleRemoveClick, userInfo.myId);
-  const element = newElement.createElement(item);
-  cardsList.setItem(element);
-} 
-
-const cardsList = new Section(
-  {
-    renderer: (item) => {renderElement(item)}},
-    '.elements'
-);
-
 const api = new Api(config);
 
 Promise.all([api.getInfo(), api.getInitialCards()])
   .then((result) => {
+    
+    // функция-обработчик клика по картинке
+    const handleCardClick = (name, link) => {
+      popupWithImage.open(name, link);
+    }
+
+    // функция-обработчик клика по корзине
+    const handleRemoveClick = (cardId, card) => {
+      popupConfirm.open();
+      popupConfirm.setHandler(
+        function() {
+          api.removeCard(cardId)
+            .then(response => {
+              card.remove();
+              card = null;
+            })
+            .then(response => popupConfirm.close())
+        }
+      )
+    }
+
+    // функция-обработчик лайка
+    const handleLikeClick = (like, likes, cardId) => {
+      if (!like.classList.contains('element__like-button_active') ) {
+        return api.likeCard(cardId)
+          .then(() => {likes.textContent++})
+        }
+      else {
+        return api.dislikeCard(cardId)
+          .then(() => {likes.textContent--})
+        }
+      }
+      
+    // функция рендера карточки со всем вышеупомянутым функционалом
+    const renderElement = (item) => {
+      const newElement = new Card('#element', handleCardClick, handleRemoveClick, handleLikeClick, userInfo.myId);
+      const element = newElement.createElement(item);
+      cardsList.setItem(element);
+    } 
+
+    // создаем экземпляр Section, с указанием контейнера, в который будут добавляться элементы
+    const cardsList = new Section({
+      renderer: (item) => {renderElement(item)}},
+      '.elements');
+    
+    // обновляем инфу в профиле в соответствии с полученными данными
     userInfo.setUserInfo(result[0])
     profileAvatar.src = result[0].avatar
+    
+    // отрисовываем карточки с сервера
     cardsList.renderItems(result[1])
-  })
-
-// объявляем функцию клика по карточке для открытия попапа
-const handleCardClick = (name, link) => {
-  popupWithImage.open(name, link);
-}
-
-const handleRemoveClick = (cardId, card) => {
-  popupConfirm.open();
-  popupConfirm.setHandler(
-    function() {
-      api.removeCard(cardId)
-        .then(response => {
-          card.remove();
-          card = null;
-        })
-        .then(response => popupConfirm.close())
+    
+    // функционал сабмита новой карточки
+    const formSubmitHandlerElement = (item) => {
+      elementSubmitButton.textContent = 'Сохранение...';
+      return api.sendElement(item)
+        .then(result => {renderElement(result)})
+        .then(() => popupElement.close())
+        .then(() => {validateElement.resetForm();
+        elementSubmitButton.textContent = 'Сохранить'
+        }
+      )
     }
-  );
-}
+
+    // создаем экземпляр попапа element и вешаем обработчики
+    const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement)
+    popupElement.setEventListeners();
+      
+    // обработчик кнопки добавления новой карточки
+    addElement.addEventListener('click', () => {
+      validateElement._toggleSubmitState();
+      validateElement.resetForm();
+      popupElement.open();
+    })
+  })
 
 // включаем валидацию для форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
@@ -66,26 +105,22 @@ validateAvatar.enableValidation();
 const formSubmitHandlerProfile = (data) => {
   userInfo.setUserInfo(data);
   popupProfile.close();
-  api.editInfo(userInfo.getUserInfo());
-}
-
-// функционал сабмита формы добавления новой карточки
-const formSubmitHandlerElement = (item) => {
-  api.sendElement(item)
-    .then(item => {renderElement(item)})
-  popupElement.close();
-  validateElement.resetForm();
+  api.editInfo(userInfo.getUserInfo())
+    .then (() => {profileSubmitButton.textContent = 'Сохранение...'})
 }
 
 // функционал сабмита формы изменения аватара
 const formSubmitHandlerAvatar = (data) => {
   api.changeAvatar(data)
-    .then(response => {userInfo.setUserAvatar(response)})
-  popupAvatar.close();
+    .then(response => {
+      avatarSubmitButton.textContent = 'Сохранение...'
+      userInfo.setUserAvatar(response)})
+  popupAvatar.close()
 }
 
 // обработчик кнопки редактирования профиля
 const editProfileHandler = () => {
+  profileSubmitButton.textContent = 'Сохранить';
   validateProfile.resetForm();
   const profileData = userInfo.getUserInfo();
   nameInput.value = profileData.name;
@@ -93,48 +128,28 @@ const editProfileHandler = () => {
   popupProfile.open();
 }
 
-// обработчик кнопки добавления новой карточки
-const addElementHandler = () => {
-  validateElement._toggleSubmitState();
-  validateElement.resetForm();
-  popupElement.open();
-}
-
 // обработчик кнопки смены аватара
 const changeAvatarHandler = () => {
+  avatarSubmitButton.textContent = 'Сохранить';
   validateAvatar._toggleSubmitState();
   validateAvatar.resetForm();
   popupAvatar.open();
 }
 
-// создаем по экземпляру каждого попапа
+// создаем по экземпляру попапов
 const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
-const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
 const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
 const popupWithImage = new PopupWithImage('.popup-image');
 const popupConfirm = new PopupConfirm('.popup-confirm');
 
 // добавляем попапам обработчики
 popupProfile.setEventListeners();
-popupElement.setEventListeners();
 popupWithImage.setEventListeners();
 popupAvatar.setEventListeners();
 popupConfirm.setEventListeners();
 
-// добавляем слушатели попапа profile
+// добавляем слушатель кнопке редактирования профиля
 editProfile.addEventListener('click', editProfileHandler);
-overlayPopupProfile.addEventListener('click', () => popupProfile.close());
 
-// добавляем слушатели попапа element
-addElement.addEventListener('click', addElementHandler);
-overlayPopupElement.addEventListener('click', () => popupElement.close());
-
-// добавляем слушатель попапа с картинкой
-overlayPopupWithImage.addEventListener('click', () => popupWithImage.close());
-
-// добавляем слушатели попапа avatar
-profileAvatarButton.addEventListener('click', changeAvatarHandler)
-overlayPopupAvatar.addEventListener('click', () => popupAvatar.close());
-
-// добавляем слушатель попапа с картинкой
-overlayPopupConfirm.addEventListener('click', () => popupConfirm.close());
+// добавляем слушатель кнопке смены аватара
+profileAvatarButton.addEventListener('click', changeAvatarHandler);

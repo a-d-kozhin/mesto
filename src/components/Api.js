@@ -1,15 +1,18 @@
+// класс взаимодействия с сервером
+
 export class Api {
   constructor({ url, headers = {} }) {
     this.url = url;
     this.headers = headers;
     this.authorization = headers.authorization;
   }
-
+  // обработка ошибок
   _handleError(error) {
     console.error(`Oops, an error occured: ${error}`)
     return Promise.reject(error.message)
   }
-  
+
+  // получить профиль с сервера
   getInfo() {
     return fetch(`${this.url}users/me`, {headers: this.headers})
     .then( (response) => {
@@ -22,6 +25,7 @@ export class Api {
       .catch(error => this._handleError(error))
     }
 
+  // получить массив изначальных карточек
   getInitialCards() {
     return fetch(`${this.url}cards`, {headers: this.headers})
     .then( (response) => {
@@ -34,6 +38,7 @@ export class Api {
     .catch(error => this._handleError(error))
     }
 
+  // отправить обновленный профиль юзера на сервер
   editInfo(obj) {
     return fetch(`${this.url}users/me`, 
     { method: 'PATCH',
@@ -48,7 +53,6 @@ export class Api {
     })
     .then((response) => {
       if(response.ok) {
-        console.log(response)
         return response.json();
       } else {
         console.error(`oops, status:${response.status}`)
@@ -57,7 +61,7 @@ export class Api {
     .catch(error => this._handleError(error))
     }
   
-
+  // отправить карточку на сервер
   sendElement(obj) {
     return fetch(`${this.url}cards`, 
     { method: 'POST',
@@ -80,6 +84,7 @@ export class Api {
     .catch(error => console.error(error))
     }
 
+  // сменить аватарку на сервере
   changeAvatar(obj) {
     return fetch(`${this.url}users/me/avatar`, 
     { method: 'PATCH',
@@ -102,8 +107,41 @@ export class Api {
     .catch(error => console.error(error))
     }  
 
-    removeCard(_id) {
-      return fetch(`${this.url}cards/${_id}`, {
+  // удалить карточку
+  removeCard(_id) {
+    return fetch(`${this.url}cards/${_id}`, {
+      method:'DELETE', 
+      headers: this.headers
+    })
+    .then( (response) => {
+      if(response.ok) {
+        return(response.json())
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+      .catch(error => this._handleError(error))
+  }
+
+  // поставить лайк
+  likeCard(_id) {
+    return fetch(`${this.url}cards/likes/${_id}`, {
+      method:'PUT', 
+      headers: this.headers
+    })
+    .then( (response) => {
+      if(response.ok) {
+        return(response.json())
+      } else {
+        console.error(`oops, status:${response.status}`)
+      }
+    })
+      .catch(error => this._handleError(error))
+    }
+    
+  // снять лайк
+    dislikeCard(_id) {
+      return fetch(`${this.url}cards/likes/${_id}`, {
         method:'DELETE', 
         headers: this.headers
       })
@@ -116,5 +154,4 @@ export class Api {
       })
         .catch(error => this._handleError(error))
       }
-
   }

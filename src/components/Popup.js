@@ -9,6 +9,7 @@ export class Popup {
   this.setEventListeners = this.setEventListeners.bind(this);
   this.close = this.close.bind(this);
   this._closeButton = this._popup.querySelector('.popup__close-button');
+  this._overlay = this._popup.querySelector('.popup__overlay');
   }
 
   // публичный метод открытия попапа и добавления обработчика
@@ -34,6 +35,7 @@ export class Popup {
 
   // публичный метод для установки обработчика на кнопку close каждого попапа
   setEventListeners() {
-    this._closeButton.addEventListener('click', this.close)
+    this._closeButton.addEventListener('click', this.close);
+    this._overlay.addEventListener('click', this.close);
   }
 }
