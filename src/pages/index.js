@@ -13,13 +13,18 @@ import { Api } from '../components/Api.js';
 // включаем функционал редактирования профиля
 const userInfo = new UserInfo(profileName, profileJob, profileAvatar);
 
-const cardsList = new Section({
-  renderer: (item) => {
-    const newElement = new Card('#element', handleCardClick, handleRemoveClick, userInfo.myId);
-    const element = newElement.createElement(item);
-    cardsList.setItem(element);
-  },
-}, '.elements');
+// функция рендера карточки
+function renderElement(item) {
+  const newElement = new Card('#element', handleCardClick, handleRemoveClick, userInfo.myId);
+  const element = newElement.createElement(item);
+  cardsList.setItem(element);
+} 
+
+const cardsList = new Section(
+  {
+    renderer: (item) => {renderElement(item)}},
+    '.elements'
+);
 
 const api = new Api(config);
 
@@ -35,11 +40,19 @@ const handleCardClick = (name, link) => {
   popupWithImage.open(name, link);
 }
 
-const handleRemoveClick = (item) => {
+const handleRemoveClick = (cardId, card) => {
   popupConfirm.open();
-  console.log(item);
+  popupConfirm.setHandler(
+    function() {
+      api.removeCard(cardId)
+        .then(response => {
+          card.remove();
+          card = null;
+        })
+        .then(response => popupConfirm.close())
+    }
+  );
 }
-
 
 // включаем валидацию для форм
 const validateProfile = new FormValidator(obj, '.popup__form_type_profile');
@@ -57,14 +70,9 @@ const formSubmitHandlerProfile = (data) => {
 }
 
 // функционал сабмита формы добавления новой карточки
-const formSubmitHandlerElement = (data) => {
-  api.sendElement(data)
-    .then(result => {
-      const newElement = new Card('#element', handleCardClick)
-      const element = newElement.createElement(result)
-      return element
-    })
-    .then(element => сardsList.setItem(element))
+const formSubmitHandlerElement = (item) => {
+  api.sendElement(item)
+    .then(item => {renderElement(item)})
   popupElement.close();
   validateElement.resetForm();
 }
@@ -104,7 +112,7 @@ const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfil
 const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
 const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
 const popupWithImage = new PopupWithImage('.popup-image');
-const popupConfirm = new PopupConfirm('.popup-confirm', function(){} );
+const popupConfirm = new PopupConfirm('.popup-confirm');
 
 // добавляем попапам обработчики
 popupProfile.setEventListeners();

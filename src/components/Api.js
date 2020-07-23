@@ -48,6 +48,7 @@ export class Api {
     })
     .then((response) => {
       if(response.ok) {
+        console.log(response)
         return response.json();
       } else {
         console.error(`oops, status:${response.status}`)
@@ -76,7 +77,6 @@ export class Api {
         console.error(`oops, status:${response.status}`)
       }
     })
-    .then(response => {return response})
     .catch(error => console.error(error))
     }
 
@@ -103,7 +103,10 @@ export class Api {
     }  
 
     removeCard(_id) {
-      return fetch(`${this.url}cards${_id}`, {headers: this.headers})
+      return fetch(`${this.url}cards/${_id}`, {
+        method:'DELETE', 
+        headers: this.headers
+      })
       .then( (response) => {
         if(response.ok) {
           return(response.json())

@@ -34,7 +34,7 @@
     this._like.addEventListener('click', () => { this._handleLikeClick() })
     this._image.addEventListener('click', () => {this._handleCardClick(this._image)})
     if (this.myId === this._ownerId) {
-      this._remove.addEventListener('click', () => { this._handleRemoveClick(this._cardId) })
+      this._remove.addEventListener('click', () => { this._handleRemoveClick(this._cardId, this._element) })
     }
     else {this._remove.remove()};
   }
@@ -51,7 +51,7 @@
     this._title.textContent = obj.name;
     this._image.alt = `${obj.name}. Фото`;
     this._likes.textContent = obj.likes.length;
-    this._cardId = obj.id;
+    this._cardId = obj._id;
     this._ownerId = obj.owner._id;
     this._setEventListeners(obj);
     return this._element;
