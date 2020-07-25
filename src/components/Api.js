@@ -6,6 +6,17 @@ export class Api {
     this.headers = headers;
     this.authorization = headers.authorization;
   }
+
+  // обработка ответа с сервера
+
+  _handleResponse(response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return Promise.reject(`Oops, response is not ok. Status: ${response.status}`);
+    }
+  }
+
   // обработка ошибок
   _handleError(error) {
     console.error(`Oops, an error occured: ${error}`)
@@ -14,144 +25,89 @@ export class Api {
 
   // получить профиль с сервера
   getInfo() {
-    return fetch(`${this.url}users/me`, {headers: this.headers})
-    .then( (response) => {
-      if(response.ok) {
-        return(response.json())
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-      .catch(error => this._handleError(error))
-    }
+    return fetch(`${this.url}users/me`, { headers: this.headers })
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
 
   // получить массив изначальных карточек
   getInitialCards() {
-    return fetch(`${this.url}cards`, {headers: this.headers})
-    .then( (response) => {
-      if(response.ok) {
-       return response.json();
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-    .catch(error => this._handleError(error))
-    }
+    return fetch(`${this.url}cards`, { headers: this.headers })
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
 
   // отправить обновленный профиль юзера на сервер
   editInfo(obj) {
-    return fetch(`${this.url}users/me`, 
-    { method: 'PATCH',
-      headers: {
-        authorization: '9b4159b0-f593-4984-be9b-af6528533bd7',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: obj.name,
-        about: obj.about
+    return fetch(`${this.url}users/me`,
+      {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({
+          name: obj.name,
+          about: obj.about
+        })
       })
-    })
-    .then((response) => {
-      if(response.ok) {
-        return response.json();
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-    .catch(error => this._handleError(error))
-    }
-  
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
+
   // отправить карточку на сервер
   sendElement(obj) {
-    return fetch(`${this.url}cards`, 
-    { method: 'POST',
-      headers: {
-        authorization: '9b4159b0-f593-4984-be9b-af6528533bd7',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: obj.title,
-        link: obj.url
+    return fetch(`${this.url}cards`,
+      {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify({
+          name: obj.title,
+          link: obj.url
+        })
       })
-    })
-    .then((response) => {
-      if(response.ok) {
-        return response.json();
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-    .catch(error => console.error(error))
-    }
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
 
   // сменить аватарку на сервере
   changeAvatar(obj) {
-    return fetch(`${this.url}users/me/avatar`, 
-    { method: 'PATCH',
-      headers: {
-        authorization: '9b4159b0-f593-4984-be9b-af6528533bd7',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        avatar: obj.avatar
+    return fetch(`${this.url}users/me/avatar`,
+      {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({
+          avatar: obj.avatar
+        })
       })
-    })
-    .then((response) => {
-      if(response.ok) {
-        return response.json();
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-    .then(response => {return response})
-    .catch(error => console.error(error))
-    }  
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
 
   // удалить карточку
   removeCard(_id) {
     return fetch(`${this.url}cards/${_id}`, {
-      method:'DELETE', 
+      method: 'DELETE',
       headers: this.headers
     })
-    .then( (response) => {
-      if(response.ok) {
-        return(response.json())
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-      .catch(error => this._handleError(error))
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
   }
 
   // поставить лайк
   likeCard(_id) {
     return fetch(`${this.url}cards/likes/${_id}`, {
-      method:'PUT', 
+      method: 'PUT',
       headers: this.headers
     })
-    .then( (response) => {
-      if(response.ok) {
-        return(response.json())
-      } else {
-        console.error(`oops, status:${response.status}`)
-      }
-    })
-      .catch(error => this._handleError(error))
-    }
-    
-  // снять лайк
-    dislikeCard(_id) {
-      return fetch(`${this.url}cards/likes/${_id}`, {
-        method:'DELETE', 
-        headers: this.headers
-      })
-      .then( (response) => {
-        if(response.ok) {
-          return(response.json())
-        } else {
-          console.error(`oops, status:${response.status}`)
-        }
-      })
-        .catch(error => this._handleError(error))
-      }
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
   }
+
+  // снять лайк
+  dislikeCard(_id) {
+    return fetch(`${this.url}cards/likes/${_id}`, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+      .then(response => this._handleResponse(response))
+      .catch(this._handleError)
+  }
+}

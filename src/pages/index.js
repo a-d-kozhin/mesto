@@ -1,5 +1,5 @@
 import './index.css';
-import { profileName, profileJob, profileAvatar, profileAvatarButton, nameInput, jobInput, editProfile, addElement, elementSubmitButton, profileSubmitButton, avatarSubmitButton} from '../utils/constants.js';
+import { profileName, profileJob, profileAvatar, profileAvatarButton, nameInput, jobInput, editProfile, addElement, elementSubmitButton, profileSubmitButton, avatarSubmitButton } from '../utils/constants.js';
 import { obj, config } from "../utils/data.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
@@ -17,7 +17,7 @@ const api = new Api(config);
 
 Promise.all([api.getInfo(), api.getInitialCards()])
   .then((result) => {
-    
+
     // функция-обработчик клика по картинке
     const handleCardClick = (name, link) => {
       popupWithImage.open(name, link);
@@ -27,64 +27,66 @@ Promise.all([api.getInfo(), api.getInitialCards()])
     const handleRemoveClick = (cardId, card) => {
       popupConfirm.open();
       popupConfirm.setHandler(
-        function() {
+        function () {
           api.removeCard(cardId)
-            .then(response => {
+            .then(() => {
               card.remove();
               card = null;
             })
-            .then(response => popupConfirm.close())
+            .then(() => popupConfirm.close())
         }
       )
     }
 
     // функция-обработчик лайка
     const handleLikeClick = (like, likes, cardId) => {
-      if (!like.classList.contains('element__like-button_active') ) {
+      if (!like.classList.contains('element__like-button_active')) {
         return api.likeCard(cardId)
-          .then(() => {likes.textContent++})
-        }
+          .then(() => { likes.textContent++ })
+      }
       else {
         return api.dislikeCard(cardId)
-          .then(() => {likes.textContent--})
-        }
+          .then(() => { likes.textContent-- })
       }
-      
+    }
+
     // функция рендера карточки со всем вышеупомянутым функционалом
     const renderElement = (item) => {
       const newElement = new Card('#element', handleCardClick, handleRemoveClick, handleLikeClick, userInfo.myId);
       const element = newElement.createElement(item);
       cardsList.setItem(element);
-    } 
+    }
 
     // создаем экземпляр Section, с указанием контейнера, в который будут добавляться элементы
     const cardsList = new Section({
-      renderer: (item) => {renderElement(item)}},
+      renderer: (item) => { renderElement(item) }
+    },
       '.elements');
-    
+
     // обновляем инфу в профиле в соответствии с полученными данными
     userInfo.setUserInfo(result[0])
     profileAvatar.src = result[0].avatar
-    
+
     // отрисовываем карточки с сервера
     cardsList.renderItems(result[1])
-    
+
     // функционал сабмита новой карточки
     const formSubmitHandlerElement = (item) => {
       elementSubmitButton.textContent = 'Сохранение...';
       return api.sendElement(item)
-        .then(result => {renderElement(result)})
+        .then(result => { renderElement(result) })
         .then(() => popupElement.close())
-        .then(() => {validateElement.resetForm();
-        elementSubmitButton.textContent = 'Сохранить'
+        .then(() => {
+          validateElement.resetForm();
+          elementSubmitButton.textContent = 'Сохранить'
         }
-      )
+        )
     }
 
     // создаем экземпляр попапа element и вешаем обработчики
     const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement)
     popupElement.setEventListeners();
-      
+
     // обработчик кнопки добавления новой карточки
     addElement.addEventListener('click', () => {
       validateElement._toggleSubmitState();
@@ -103,18 +105,19 @@ validateAvatar.enableValidation();
 
 // функционал сабмита формы редактирования профиля
 const formSubmitHandlerProfile = (data) => {
+  profileSubmitButton.textContent = 'Сохранение...';
   userInfo.setUserInfo(data);
   popupProfile.close();
-  api.editInfo(userInfo.getUserInfo())
-    .then (() => {profileSubmitButton.textContent = 'Сохранение...'})
+  api.editInfo(userInfo.getUserInfo());
 }
 
 // функционал сабмита формы изменения аватара
 const formSubmitHandlerAvatar = (data) => {
+  avatarSubmitButton.textContent = 'Сохранение...';
   api.changeAvatar(data)
     .then(response => {
-      avatarSubmitButton.textContent = 'Сохранение...'
-      userInfo.setUserAvatar(response)})
+      userInfo.setUserAvatar(response)
+    })
   popupAvatar.close()
 }
 

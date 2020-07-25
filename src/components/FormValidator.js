@@ -60,7 +60,7 @@ export class FormValidator {
   
   // публичный метод, включающий валидацию формы
   enableValidation() {
-      this._inputElements.forEach(element => {element.addEventListener('input', (event) => { this._handleInput(element) }) })
+      this._inputElements.forEach(element => {element.addEventListener('input', () => { this._handleInput(element) }) })
       this._formElement.addEventListener('input', () => { this._toggleSubmitState() })    
   }
 }
