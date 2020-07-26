@@ -81,11 +81,9 @@ Promise.all([api.getInfo(), api.getInitialCards()])
         )
     }
 
-    // создаем экземпляр попапа element и avatar вешаем обработчики
+    // создаем экземпляр попапа element и вешаем обработчики
     const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
-    const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
     popupElement.setEventListeners();
-    popupAvatar.setEventListeners();
 
     // обработчик кнопки добавления новой карточки
     addElement.addEventListener('click', () => {
@@ -112,6 +110,10 @@ Promise.all([api.getInfo(), api.getInitialCards()])
         })
         .then(() => popupAvatar.close())
     }
+    // создаем экземпляр попапа avatar и вешаем обработчики
+    const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
+    popupAvatar.setEventListeners();
+
     // добавляем слушатель кнопке смены аватара
     profileAvatarButton.addEventListener('click', changeAvatarHandler);
   })
