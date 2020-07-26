@@ -17,7 +17,6 @@ const api = new Api(config);
 
 Promise.all([api.getInfo(), api.getInitialCards()])
   .then((result) => {
-
     // функция-обработчик клика по картинке
     const handleCardClick = (name, link) => {
       popupWithImage.open(name, link);
@@ -78,21 +77,43 @@ Promise.all([api.getInfo(), api.getInitialCards()])
         .then(() => popupElement.close())
         .then(() => {
           validateElement.resetForm();
-          elementSubmitButton.textContent = 'Сохранить'
         }
         )
     }
 
-    // создаем экземпляр попапа element и вешаем обработчики
-    const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement)
+    // создаем экземпляр попапа element и avatar вешаем обработчики
+    const popupElement = new PopupWithForm('.popup-element', formSubmitHandlerElement);
+    const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
     popupElement.setEventListeners();
+    popupAvatar.setEventListeners();
 
     // обработчик кнопки добавления новой карточки
     addElement.addEventListener('click', () => {
+      elementSubmitButton.textContent = 'Сохранить'
       validateElement._toggleSubmitState();
       validateElement.resetForm();
       popupElement.open();
     })
+
+    // обработчик кнопки смены аватара
+    const changeAvatarHandler = () => {
+      avatarSubmitButton.textContent = 'Сохранить';
+      validateAvatar._toggleSubmitState();
+      validateAvatar.resetForm();
+      popupAvatar.open();
+    }
+
+    // функционал сабмита формы изменения аватара
+    const formSubmitHandlerAvatar = (data) => {
+      avatarSubmitButton.textContent = 'Сохранение...';
+      api.changeAvatar(data)
+        .then(response => {
+          userInfo.setUserAvatar(response)
+        })
+        .then(() => popupAvatar.close())
+    }
+    // добавляем слушатель кнопке смены аватара
+    profileAvatarButton.addEventListener('click', changeAvatarHandler);
   })
 
 // включаем валидацию для форм
@@ -111,16 +132,6 @@ const formSubmitHandlerProfile = (data) => {
   api.editInfo(userInfo.getUserInfo());
 }
 
-// функционал сабмита формы изменения аватара
-const formSubmitHandlerAvatar = (data) => {
-  avatarSubmitButton.textContent = 'Сохранение...';
-  api.changeAvatar(data)
-    .then(response => {
-      userInfo.setUserAvatar(response)
-    })
-  popupAvatar.close()
-}
-
 // обработчик кнопки редактирования профиля
 const editProfileHandler = () => {
   profileSubmitButton.textContent = 'Сохранить';
@@ -131,28 +142,15 @@ const editProfileHandler = () => {
   popupProfile.open();
 }
 
-// обработчик кнопки смены аватара
-const changeAvatarHandler = () => {
-  avatarSubmitButton.textContent = 'Сохранить';
-  validateAvatar._toggleSubmitState();
-  validateAvatar.resetForm();
-  popupAvatar.open();
-}
-
 // создаем по экземпляру попапов
 const popupProfile = new PopupWithForm('.popup-profile', formSubmitHandlerProfile);
-const popupAvatar = new PopupWithForm('.popup-avatar', formSubmitHandlerAvatar);
 const popupWithImage = new PopupWithImage('.popup-image');
 const popupConfirm = new PopupConfirm('.popup-confirm');
 
 // добавляем попапам обработчики
 popupProfile.setEventListeners();
 popupWithImage.setEventListeners();
-popupAvatar.setEventListeners();
 popupConfirm.setEventListeners();
 
 // добавляем слушатель кнопке редактирования профиля
 editProfile.addEventListener('click', editProfileHandler);
-
-// добавляем слушатель кнопке смены аватара
-profileAvatarButton.addEventListener('click', changeAvatarHandler);
