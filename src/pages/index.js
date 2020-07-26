@@ -75,10 +75,7 @@ Promise.all([api.getInfo(), api.getInitialCards()])
       return api.sendElement(item)
         .then(result => { renderElement(result) })
         .then(() => popupElement.close())
-        .then(() => {
-          validateElement.resetForm();
-        }
-        )
+        .then(() => validateElement.resetForm())
     }
 
     // создаем экземпляр попапа element и вешаем обработчики
@@ -130,8 +127,8 @@ validateAvatar.enableValidation();
 const formSubmitHandlerProfile = (data) => {
   profileSubmitButton.textContent = 'Сохранение...';
   userInfo.setUserInfo(data);
-  popupProfile.close();
-  api.editInfo(userInfo.getUserInfo());
+  api.editInfo(userInfo.getUserInfo())
+    .then(() => popupProfile.close())
 }
 
 // обработчик кнопки редактирования профиля
